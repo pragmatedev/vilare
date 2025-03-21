@@ -86,9 +86,10 @@ class Contact extends Block
                     "Contact By: {$_POST['type']}",
                 ]
             ),
+            'headers' => ['Content-Type: text/html; charset=UTF-8'],
         ];
 
-        $result = wp_mail($config['to'], $config['subject'], $config['message']);
+        $result = wp_mail($config['to'], $config['subject'], $config['message'], $config['headers']);
 
         if (empty($result)) {
             wp_die(__('Form submission failed.', 'fm'));
