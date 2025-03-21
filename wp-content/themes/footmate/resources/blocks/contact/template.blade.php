@@ -17,6 +17,7 @@
             name="name"
             id="name"
             required
+            autocomplete="off"
         />
     </fieldset>
 
@@ -30,6 +31,7 @@
             name="email"
             id="email"
             required
+            autocomplete="off"
         />
     </fieldset>
 
@@ -42,6 +44,7 @@
             type="phone"
             name="phone"
             id="phone"
+            autocomplete="off"
         />
     </fieldset>
 
@@ -59,6 +62,7 @@
                 value=""
                 disabled
                 selected
+                autocomplete="off"
             >
                 {{ __('Select', 'fm') }}
             </option>
@@ -79,6 +83,7 @@
             id="privacy"
             name="privacy"
             required
+            autocomplete="off"
         />
 
         <span>
