@@ -2,6 +2,6 @@
 
 @section('content')
     <main class="site-content -wrapper">
-        {{ the_content() }}
+        {!! block('contact')->render() !!}
     </main>
 @endsection
