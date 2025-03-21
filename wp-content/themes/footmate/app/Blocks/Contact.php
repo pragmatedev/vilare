@@ -70,7 +70,7 @@ class Contact extends Block
             wp_die(__('Invalid email address.', 'fm'));
         }
 
-        if (! empty($_POST['phone']) && ! preg_match("/^[\d+\- ]+$/", $_POST['phone'])) {
+        if (! empty($_POST['phone']) && ! preg_match('/^[\d+\- ]+$/', $_POST['phone'])) {
             wp_die(__('Invalid phone number.', 'fm'));
         }
 
@@ -95,5 +95,27 @@ class Contact extends Block
         } else {
             wp_die(__('Form submitted successfully.', 'fm'));
         }
+    }
+
+    public function store(string $email): bool
+    {
+        if (empty($email)) {
+            wp_die(__('Email is required.', 'fm'));
+        }
+
+        if (! is_email($email)) {
+            wp_die(__('Invalid email address.', 'fm'));
+        }
+
+        $post = wp_insert_post(
+            [
+                'post_type' => 'contact',
+                'meta_input' => [
+                    'email' => $email,
+                ],
+            ]
+        );
+
+        return ! empty($post);
     }
 }
