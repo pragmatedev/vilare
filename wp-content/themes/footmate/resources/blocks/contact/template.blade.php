@@ -17,6 +17,7 @@
             name="name"
             id="name"
             required
+            value="First User"
         />
     </fieldset>
 
@@ -30,6 +31,7 @@
             name="email"
             id="email"
             required
+            value="first@local.test"
         />
     </fieldset>
 
@@ -57,13 +59,15 @@
             <option
                 value=""
                 disabled
-                selected
                 required
             >
                 {{ __('Select', 'fm') }}
             </option>
 
-            <option value="email">
+            <option
+                value="email"
+                selected
+            >
                 {{ __('Email', 'fm') }}
             </option>
 
@@ -79,12 +83,19 @@
             id="privacy"
             name="privacy"
             required
+            checked
         />
 
         <span>
             {{ __('Accept privacy policy', 'fm') }}
         </span>
     </label>
+
+    <input
+        type="hidden"
+        name="action"
+        value="contact"
+    />
 
     <button type="submit">
         {{ __('Submit', 'fm') }}
