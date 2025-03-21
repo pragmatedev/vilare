@@ -30,6 +30,14 @@ class Contact extends Block
      */
     public function handle(): void
     {
+        if (empty($_POST['nonce'])) {
+            wp_die(__('Nonce is required.', 'fm'));
+        }
+
+        if (! wp_verify_nonce($_POST['nonce'], 'contact')) {
+            wp_die(__('Nonce is invalid.', 'fm'));
+        }
+
         if (empty($_POST['name'])) {
             wp_die(__('Name is required.', 'fm'));
         }

@@ -17,7 +17,6 @@
             name="name"
             id="name"
             required
-            value="First User"
         />
     </fieldset>
 
@@ -31,7 +30,6 @@
             name="email"
             id="email"
             required
-            value="first@local.test"
         />
     </fieldset>
 
@@ -55,19 +53,17 @@
         <select
             name="type"
             id="type"
+            required
         >
             <option
                 value=""
                 disabled
-                required
+                selected
             >
                 {{ __('Select', 'fm') }}
             </option>
 
-            <option
-                value="email"
-                selected
-            >
+            <option value="email">
                 {{ __('Email', 'fm') }}
             </option>
 
@@ -83,7 +79,6 @@
             id="privacy"
             name="privacy"
             required
-            checked
         />
 
         <span>
@@ -95,6 +90,11 @@
         type="hidden"
         name="action"
         value="contact"
+    />
+    <input
+        type="hidden"
+        name="nonce"
+        value="{{ wp_create_nonce('contact') }}"
     />
 
     <button type="submit">
