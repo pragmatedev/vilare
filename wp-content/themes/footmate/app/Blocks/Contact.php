@@ -39,15 +39,7 @@ class Contact extends Block
                 'type' => 'required|string|in:email,phone',
                 'privacy' => 'required|accepted',
                 'phone' => 'required_if:type,phone|string|regex:/^[\d+\- ]+$/i',
-                'nonce' => [
-                    'required',
-                    'string',
-                    function (string $attribute, mixed $value, $fail) {
-                        if (empty(wp_verify_nonce($value, 'contact'))) {
-                            $fail("The {$attribute} is invalid.");
-                        }
-                    },
-                ],
+                'nonce' => 'required|nonce',
             ]
         );
 

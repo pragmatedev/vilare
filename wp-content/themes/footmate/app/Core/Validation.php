@@ -47,6 +47,14 @@ class Validation
                 )
             );
 
+            $factory->extend(
+                'nonce',
+                function (string $attribute, mixed $value) {
+                    return ! empty(wp_verify_nonce($value, 'contact'));
+                },
+                __('The :attribute is invalid.', 'fm')
+            );
+
             wp_cache_set('fm_validation_factory', $factory);
         }
 
