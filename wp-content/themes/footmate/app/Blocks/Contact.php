@@ -5,6 +5,7 @@
 namespace FM\Blocks;
 
 use FM\Blocks\Block;
+use FM\Core\Validation;
 
 class Contact extends Block
 {
@@ -30,48 +31,28 @@ class Contact extends Block
      */
     public function handle(): void
     {
-        if (empty($_POST['nonce'])) {
-            wp_die(__('Nonce is required.', 'fm'));
-        }
+        $data = Validation::validate(
+            $_POST,
+            [
+                'name' => 'required|string|min:2|max:100',
+                'email' => 'required|email',
+                'type' => 'required|string|in:email,phone',
+                'privacy' => 'required|accepted',
+                'phone' => 'required_if:type,phone|string|regex:/^[\d+\- ]+$/i',
+                'nonce' => [
+                    'required',
+                    'string',
+                    function (string $attribute, mixed $value, $fail) {
+                        if (empty(wp_verify_nonce($value, 'contact'))) {
+                            $fail("The {$attribute} is invalid.");
+                        }
+                    },
+                ],
+            ]
+        );
 
-        if (! wp_verify_nonce($_POST['nonce'], 'contact')) {
-            wp_die(__('Nonce is invalid.', 'fm'));
-        }
-
-        if (empty($_POST['name'])) {
-            wp_die(__('Name is required.', 'fm'));
-        }
-
-        if (empty($_POST['email'])) {
-            wp_die(__('Email is required.', 'fm'));
-        }
-
-        if (empty($_POST['type'])) {
-            wp_die(__('Type is required.', 'fm'));
-        }
-
-        if (empty($_POST['privacy'])) {
-            wp_die(__('You must accept privacy policy.', 'fm'));
-        }
-
-        if ($_POST['type'] === 'phone' && empty($_POST['phone'])) {
-            wp_die(__('Phone is required.', 'fm'));
-        }
-
-        if (strlen($_POST['name']) < 2) {
-            wp_die(__('Name is too short.', 'fm'));
-        }
-
-        if (strlen($_POST['name']) > 100) {
-            wp_die(__('Name is too long.', 'fm'));
-        }
-
-        if (! is_email($_POST['email'])) {
-            wp_die(__('Invalid email address.', 'fm'));
-        }
-
-        if (! empty($_POST['phone']) && ! preg_match('/^[\d+\- ]+$/', $_POST['phone'])) {
-            wp_die(__('Invalid phone number.', 'fm'));
+        if (is_wp_error($data)) {
+            wp_die(esc_attr($data->get_error_message()));
         }
 
         $config = [
@@ -89,9 +70,9 @@ class Contact extends Block
             'headers' => ['Content-Type: text/html; charset=UTF-8'],
         ];
 
-        $result = wp_mail($config['to'], $config['subject'], $config['message'], $config['headers']);
+        $data = wp_mail($config['to'], $config['subject'], $config['message'], $config['headers']);
 
-        if (empty($result)) {
+        if (empty($data)) {
             wp_die(__('Form submission failed.', 'fm'));
         } else {
             wp_die(__('Form submitted successfully.', 'fm'));
