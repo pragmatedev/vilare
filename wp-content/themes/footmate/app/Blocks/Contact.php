@@ -1,6 +1,6 @@
 <?php
 
-// phpcs:disable
+// phpcs:disable WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotValidatedNotSanitized,WordPress.Security.EscapeOutput.OutputNotEscaped
 
 namespace FM\Blocks;
 

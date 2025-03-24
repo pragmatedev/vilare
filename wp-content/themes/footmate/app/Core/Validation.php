@@ -55,6 +55,8 @@ class Validation
                 __('The :attribute is invalid.', 'fm')
             );
 
+            do_action('fm_core_validation_factory', $factory);
+
             wp_cache_set('fm_validation_factory', $factory);
         }
 
