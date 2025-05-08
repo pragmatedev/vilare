@@ -24,4 +24,9 @@ class Templating
     {
         return $this->provider->generate($template, $data);
     }
+
+    public function view(string $template, array $data = [])
+    {
+        return $this->provider->view($template, $data);
+    }
 }

@@ -3,6 +3,7 @@
 namespace FM\Templating;
 
 use FM\Templating\Directives;
+use Illuminate\Contracts\View\View;
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\Factory;
 use Illuminate\View\FileViewFinder;
@@ -26,9 +27,14 @@ class Provider
 
     public function generate(string $template, array $data = []): string
     {
+        return $this->view($template, $data)->render();
+    }
+
+    public function view(string $template, array $data = []): View
+    {
         return fm()->filesystem()->exists($template)
-            ? $this->factory->file($template, $data)->render()
-            : $this->factory->make($template, $data)->render();
+            ? $this->factory->file($template, $data)
+            : $this->factory->make($template, $data);
     }
 
     private function init(): void
@@ -41,9 +47,13 @@ class Provider
 
         $directives->register($compiler);
         $resolver->register('blade', fn() => new CompilerEngine($compiler));
+
         $finder->addNamespace('blocks', fm()->config()->get('blocks.path'));
+        $finder->addNamespace('components', fm()->config()->get('components.path'));
         $finder->addNamespace('templates', fm()->config()->get('templates.path'));
 
         $this->factory = new Factory($resolver, $finder, $dispatcher);
+
+        do_action('fm_templating_provider_init', $compiler, $finder);
     }
 }
