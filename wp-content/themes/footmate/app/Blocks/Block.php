@@ -2,8 +2,13 @@
 
 namespace FM\Blocks;
 
+use FM\Integrations\ACFInnerBlocks;
+use FM\Core\Validation;
+
 abstract class Block
 {
+    use ACFInnerBlocks;
+
     private string $id = '';
 
     private string $title = '';
@@ -25,7 +30,7 @@ abstract class Block
     {
         ob_start();
 
-        fm()->templating()->render($this->getTemplate(), $this->parse($data));
+        fm()->templating()->render("blocks::{$this->getId()}.template", $this->parse($data));
 
         return ob_get_clean();
     }
@@ -36,7 +41,7 @@ abstract class Block
         $data = apply_filters("fm_blocks_{$this->getId()}_data", $data);
 
         if ($this->hasSchema() && ! is_admin()) {
-            $result = fm()->validation()->validate($data, $this->getSchema());
+            $result = Validation::validate($data, $this->getSchema());
 
             if (is_wp_error($result)) {
                 throw new \Exception(
@@ -56,13 +61,20 @@ abstract class Block
 
     final public function enqueue(): void
     {
-        fm()->assets()->enqueue("blocks/{$this->getId()}/script.js", ['handle' => "block-{$this->getId()}-script"]);
-        fm()->assets()->enqueue("blocks/{$this->getId()}/style.scss", ['handle' => "block-{$this->getId()}-style"]);
-    }
-
-    final protected function getTemplate(): string
-    {
-        return sprintf('%s/%s/template.blade.php', fm()->config()->get('blocks.path'), $this->getId());
+        fm()->assets()->enqueue(
+            "blocks/{$this->getId()}/script.js",
+            [
+                'handle' => "block-{$this->getId()}-script",
+                'deps' => ['script'],
+            ]
+        );
+        fm()->assets()->enqueue(
+            "blocks/{$this->getId()}/style.scss",
+            [
+                'handle' => "block-{$this->getId()}-style",
+                'deps' => ['style'],
+            ]
+        );
     }
 
     final public function getId(): string
@@ -143,6 +155,7 @@ abstract class Block
 
     /**
      * @action wp_enqueue_scripts
+     * @action admin_enqueue_scripts
      */
     final public function enqueuePrimary(): void
     {
