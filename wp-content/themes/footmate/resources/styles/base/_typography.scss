@@ -28,6 +28,10 @@
     url('../fonts/Montserrat-Bold.woff') format('woff');
 }
 
+html {
+  font-size: 10px;
+}
+
 body {
   font-family: var(--font-primary);
   font-size: 1.6rem;
