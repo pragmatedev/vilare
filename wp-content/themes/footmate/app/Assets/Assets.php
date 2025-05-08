@@ -13,8 +13,19 @@ class Assets
      */
     public function front(): void
     {
-        $this->enqueue('styles/styles.scss', ['handle' => 'style']);
-        $this->enqueue('scripts/scripts.js', ['handle' => 'script']);
+        $this->enqueue(
+            'styles/styles.scss',
+            [
+                'handle' => 'style',
+            ]
+        );
+
+        $this->enqueue(
+            'scripts/scripts.js',
+            [
+                'handle' => 'script',
+            ]
+        );
 
         wp_localize_script(
             'script',
@@ -26,6 +37,18 @@ class Assets
     }
 
     /**
+     * @action admin_enqueue_scripts
+     */
+    public function admin(): void
+    {
+        $this->enqueue('styles/admin.scss', ['handle' => 'admin']);
+
+        if ('post' === get_current_screen()->base && has_blocks()) {
+            $this->front();
+        }
+    }
+
+    /**
      * @action wp_head
      */
     public function preload(): void
@@ -34,7 +57,7 @@ class Assets
             'fm_assets_preload',
             [
                 [
-                    'href' => fm()->assets()->resolve('fonts/SourceSerif4-Regular.woff2'),
+                    'href' => fm()->assets()->resolve('fonts/Montserrat-Regular.woff2'),
                     'as' => 'font',
                     'type' => 'font/woff2',
                 ],
