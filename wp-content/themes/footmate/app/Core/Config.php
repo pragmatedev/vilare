@@ -39,6 +39,12 @@ class Config
             'blocks' => [
                 'path' => FM_PATH . '/resources/blocks',
             ],
+            'components' => [
+                'path' => FM_PATH . '/resources/components',
+            ],
+            'templates' => [
+                'path' => FM_PATH . '/resources/templates',
+            ],
         ];
     }
 

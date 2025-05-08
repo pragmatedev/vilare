@@ -17,8 +17,10 @@ class Validation
         if ($validator->fails()) {
             $errors = new WP_Error();
 
-            foreach ($validator->errors()->all() as $error) {
-                $errors->add('validation', $error);
+            foreach ($validator->errors()->messages() as $key => $messages) {
+                foreach ($messages as $message) {
+                    $errors->add($key, $message);
+                }
             }
 
             return $errors;
