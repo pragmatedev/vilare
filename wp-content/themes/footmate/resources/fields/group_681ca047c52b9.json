@@ -1,9 +1,9 @@
 {
-    "key": "group_67a362c847851",
-    "title": "[FM] Block: Base",
+    "key": "group_681ca047c52b9",
+    "title": "[FM] Template: Base",
     "fields": [
         {
-            "key": "field_67a362c8e47f5",
+            "key": "field_681ca04718cf9",
             "label": "Title",
             "name": "title",
             "aria-label": "",
@@ -27,9 +27,9 @@
     "location": [
         [
             {
-                "param": "block",
+                "param": "page_template",
                 "operator": "==",
-                "value": "acf\/base"
+                "value": "base"
             }
         ]
     ],
@@ -42,5 +42,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1746706565
+    "modified": 1746706569
 }

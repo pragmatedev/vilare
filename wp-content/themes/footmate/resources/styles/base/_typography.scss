@@ -33,8 +33,6 @@ body {
   font-size: 1.6rem;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
-  color: var(--color-black);
-  background-color: var(--color-white);
 }
 
 h1,
@@ -44,21 +42,4 @@ h4,
 h5,
 h6 {
   font-family: var(--font-secondary);
-}
-
-p,
-li {
-  margin-bottom: 1.375rem;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-a {
-  color: var(--color-black);
-
-  &:hover {
-    text-decoration: none;
-  }
 }

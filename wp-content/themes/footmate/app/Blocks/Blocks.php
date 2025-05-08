@@ -13,11 +13,12 @@ class Blocks
      */
     public function init(): void
     {
-        $ignores = ['..', '.', 'Block.php', 'Blocks.php'];
-        $classes = array_values(array_diff(scandir(__DIR__), $ignores));
+        $classes = collect(fm()->filesystem()->glob(__DIR__ . '/*.php'))
+            ->map(fn($path) => pathinfo($path, PATHINFO_FILENAME))
+            ->reject(fn($name) => in_array($name, ['Block', 'Blocks']))
+            ->map(fn($name) => sprintf('FM\Blocks\\%s', $name));
 
         foreach ($classes as $class) {
-            $class = sprintf('FM\Blocks\%s', str_replace('.php', '', $class));
             $block = \FM\App::init(new $class());
             $this->blocks[$block->getId()] = $block;
         }

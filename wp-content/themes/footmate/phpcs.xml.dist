@@ -50,6 +50,7 @@
     <exclude name="WordPress.Arrays.MultipleStatementAlignment" />
     <exclude name="WordPress.PHP.YodaConditions" />
     <exclude name="WordPress.PHP.StrictInArray.MissingTrueStrict" />
+    <exclude name="WordPress.Security.NonceVerification.Recommended" />
     <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
   </rule>
 
@@ -77,11 +78,14 @@
   <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman">
     <severity>5</severity>
   </rule>
+  <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.NewlineBeforeOpenBrace">
+    <severity>0</severity>
+  </rule>
 
   <!-- Other -->
-  <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
-  <rule ref="Generic.Formatting.SpaceAfterNot" />
   <rule ref="Internal.NoCodeFound">
     <severity>0</severity>
   </rule>
+  <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+  <rule ref="Generic.Formatting.SpaceAfterNot" />
 </ruleset>

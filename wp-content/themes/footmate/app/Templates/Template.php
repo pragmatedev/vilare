@@ -1,14 +1,11 @@
 <?php
 
-namespace FM\Blocks;
+namespace FM\Templates;
 
-use FM\Integrations\ACFInnerBlocks;
 use FM\Core\Validation;
 
-abstract class Block
+abstract class Template
 {
-    use ACFInnerBlocks;
-
     private string $id = '';
 
     private string $title = '';
@@ -30,7 +27,7 @@ abstract class Block
     {
         ob_start();
 
-        fm()->templating()->render("blocks::{$this->getId()}.template", $this->parse($data));
+        fm()->templating()->render("templates::{$this->getId()}.template", $this->parse($data));
 
         return ob_get_clean();
     }
@@ -38,7 +35,7 @@ abstract class Block
     final protected function parse(array $data): array
     {
         $data = array_replace_recursive($this->getData(), $data);
-        $data = apply_filters("fm_blocks_{$this->getId()}_data", $data);
+        $data = apply_filters("fm_templates_{$this->getId()}_data", $data);
 
         if ($this->hasSchema() && ! is_admin()) {
             $result = Validation::validate($data, $this->getSchema());
@@ -47,7 +44,7 @@ abstract class Block
                 throw new \Exception(
                     esc_attr(
                         sprintf(
-                            '%s block data verification failed: %s',
+                            '%s template data verification failed: %s',
                             $this->getTitle(),
                             $result->get_error_message()
                         )
@@ -62,16 +59,16 @@ abstract class Block
     final public function enqueue(): void
     {
         fm()->assets()->enqueue(
-            "blocks/{$this->getId()}/script.js",
+            "templates/{$this->getId()}/script.js",
             [
-                'handle' => "block-{$this->getId()}-script",
+                'handle' => "template-{$this->getId()}-script",
                 'deps' => ['script'],
             ]
         );
         fm()->assets()->enqueue(
-            "blocks/{$this->getId()}/style.scss",
+            "templates/{$this->getId()}/style.scss",
             [
-                'handle' => "block-{$this->getId()}-style",
+                'handle' => "template-{$this->getId()}-style",
                 'deps' => ['style'],
             ]
         );
@@ -80,7 +77,7 @@ abstract class Block
     final public function getId(): string
     {
         if (empty($this->id)) {
-            throw new \Exception('Block ID is missing.');
+            throw new \Exception('Template ID is missing.');
         }
 
         return $this->id;
@@ -94,7 +91,7 @@ abstract class Block
     final public function getTitle(): string
     {
         if (empty($this->id)) {
-            throw new \Exception('Block Title is missing.');
+            throw new \Exception('Template Title is missing.');
         }
 
         return $this->title;
@@ -155,12 +152,28 @@ abstract class Block
 
     /**
      * @action wp_enqueue_scripts
-     * @action admin_enqueue_scripts
      */
     final public function enqueuePrimary(): void
     {
         if ($this->isPrimary()) {
             $this->enqueue();
+        }
+    }
+
+    /**
+     * @action wp_enqueue_scripts 1000
+     * @action admin_enqueue_scripts
+     */
+    public function unset(): void
+    {
+        $template = get_post_meta(get_the_id(), '_wp_page_template', true);
+
+        if ($this->getId() === $template) {
+            wp_dequeue_style('app/0');
+            wp_dequeue_script('app/0');
+            wp_dequeue_script('app/1');
+            wp_dequeue_script('app/2');
+            wp_dequeue_style('global-styles');
         }
     }
 }

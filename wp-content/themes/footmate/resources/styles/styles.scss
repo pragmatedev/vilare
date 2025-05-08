@@ -6,3 +6,26 @@
 @import
   'base/normalize',
   'base/typography';
+
+html {
+  scroll-behavior: smooth;
+  font-size: 10px;
+}
+
+.noscroll {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+.noscrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.grecaptcha-badge {
+  display: none !important;
+}

@@ -1,7 +1,9 @@
 import path from 'path';
 import { defineConfig } from 'vite';
-import blocks from './.vite/blocks';
 import copy from './.vite/copy';
+import blocks from './.vite/blocks';
+import components from './.vite/components';
+import templates from './.vite/templates';
 
 const ROOT = path.resolve('../../../');
 const BASE = __dirname.replace(ROOT, '');
@@ -18,6 +20,7 @@ export default defineConfig({
       input: [
         'resources/scripts/scripts.js',
         'resources/styles/styles.scss',
+        'resources/styles/admin.scss',
       ],
       output: {
         entryFileNames: '[hash].js',
@@ -49,16 +52,27 @@ export default defineConfig({
   },
 
   plugins: [
+    copy({
+      targets: [
+        {
+          src: 'resources/images/**/*.{mp4,png,jpg,jpeg,svg,webp,avif}',
+        },
+        {
+          src: 'resources/videos/**/*.{mp4,png,jpg,jpeg,svg,webp,avif}',
+        },
+      ],
+    }),
+
     blocks({
       path: 'resources/blocks',
     }),
 
-    copy({
-      targets: [
-        {
-          src: 'resources/images/**/*.{png,jpg,jpeg,svg,webp,avif}',
-        },
-      ],
+    components({
+      path: 'resources/components',
+    }),
+
+    templates({
+      path: 'resources/templates',
     }),
 
     {

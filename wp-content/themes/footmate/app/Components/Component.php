@@ -1,14 +1,12 @@
 <?php
 
-namespace FM\Blocks;
+namespace FM\Components;
 
-use FM\Integrations\ACFInnerBlocks;
 use FM\Core\Validation;
+use Illuminate\View\Component as ComponentBase;
 
-abstract class Block
+abstract class Component extends ComponentBase
 {
-    use ACFInnerBlocks;
-
     private string $id = '';
 
     private string $title = '';
@@ -17,20 +15,18 @@ abstract class Block
 
     private array $schema = [];
 
-    private bool $primary = false;
+    private bool $primary = true;
 
-    final public function render(array $data = []): void
+    final public function render(array $data = [])
     {
-        $this->enqueue();
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        echo $this->generate($data);
+        return fm()->templating()->view("components::{$this->getId()}.template", $this->parse($this->data));
     }
 
     final public function generate(array $data = []): string
     {
         ob_start();
 
-        fm()->templating()->render("blocks::{$this->getId()}.template", $this->parse($data));
+        fm()->templating()->render("components::{$this->getId()}.template", $this->parse($data));
 
         return ob_get_clean();
     }
@@ -38,7 +34,7 @@ abstract class Block
     final protected function parse(array $data): array
     {
         $data = array_replace_recursive($this->getData(), $data);
-        $data = apply_filters("fm_blocks_{$this->getId()}_data", $data);
+        $data = apply_filters("fm_components_{$this->getId()}_data", $data);
 
         if ($this->hasSchema() && ! is_admin()) {
             $result = Validation::validate($data, $this->getSchema());
@@ -47,7 +43,7 @@ abstract class Block
                 throw new \Exception(
                     esc_attr(
                         sprintf(
-                            '%s block data verification failed: %s',
+                            '%s component data verification failed: %s',
                             $this->getTitle(),
                             $result->get_error_message()
                         )
@@ -62,16 +58,16 @@ abstract class Block
     final public function enqueue(): void
     {
         fm()->assets()->enqueue(
-            "blocks/{$this->getId()}/script.js",
+            "components/{$this->getId()}/script.js",
             [
-                'handle' => "block-{$this->getId()}-script",
+                'handle' => "component-{$this->getId()}-script",
                 'deps' => ['script'],
             ]
         );
         fm()->assets()->enqueue(
-            "blocks/{$this->getId()}/style.scss",
+            "components/{$this->getId()}/style.scss",
             [
-                'handle' => "block-{$this->getId()}-style",
+                'handle' => "component-{$this->getId()}-style",
                 'deps' => ['style'],
             ]
         );
@@ -80,7 +76,7 @@ abstract class Block
     final public function getId(): string
     {
         if (empty($this->id)) {
-            throw new \Exception('Block ID is missing.');
+            throw new \Exception('Component ID is missing.');
         }
 
         return $this->id;
@@ -94,7 +90,7 @@ abstract class Block
     final public function getTitle(): string
     {
         if (empty($this->id)) {
-            throw new \Exception('Block Title is missing.');
+            throw new \Exception('Component Title is missing.');
         }
 
         return $this->title;
