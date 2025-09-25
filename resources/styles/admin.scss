@@ -1,0 +1,22 @@
+@import
+  'abstracts/mixins',
+  'abstracts/variables',
+  'abstracts/modifiers';
+
+.wp-admin {
+  .is-root-container {
+    & > .wp-block {
+      width: 90% !important;
+      max-width: 100dvw !important;
+      margin: 5rem 0;
+    }
+  }
+
+  .editor-sidebar {
+    .acf-block-fields {
+      .acf-field {
+        width: 100% !important;
+      }
+    }
+  }
+}

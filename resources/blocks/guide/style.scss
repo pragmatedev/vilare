@@ -1,0 +1,91 @@
+.block-guide {
+  @extend %container-md;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin: 4rem auto;
+
+  &__header {
+    text-align: center;
+  }
+
+  &__table {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    align-items: center;
+    justify-content: space-between;
+
+    @include up(sm) {
+      flex-direction: row;
+    }
+
+    & > div {
+      @include up(sm) {
+        flex: 1;
+      }
+    }
+
+    &.-text {
+      position: relative;
+    }
+
+    &.-font {
+      & > div {
+        @extend %text-h2;
+      }
+    }
+
+    &.-color {
+      & > div {
+        @extend %radius-md;
+
+        width: 100%;
+        height: 4rem;
+      }
+    }
+
+    &.-radius {
+      & > div {
+        width: 100%;
+        height: 4rem;
+        background-color: var(--color-gray-100);
+      }
+    }
+
+    &.-container {
+      @extend %radius-md;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 4rem;
+      background: var(--color-gray-100);
+    }
+
+    button {
+      width: 15rem;
+      padding: 0.5rem;
+    }
+  }
+
+  &__tooltip {
+    @extend %text-xs;
+
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-md);
+    color: var(--color-gray-50);
+    background-color: var(--color-gray-950);
+  }
+}

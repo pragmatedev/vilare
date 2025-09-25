@@ -1,0 +1,30 @@
+name: Lint
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    container:
+      image: pragmatedev/vitewp-docker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: wp-content/themes/vilare/vendor
+          key: composer-${{ hashFiles('**/composer.lock') }}
+      - uses: actions/cache@v4
+        with:
+          path: wp-content/themes/vilare/node_modules
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+      - run: composer install
+      - run: yarn install
+      - run: yarn lint
+    defaults:
+      run:
+        working-directory: wp-content/themes/vilare
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - '**'

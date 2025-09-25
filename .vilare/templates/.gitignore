@@ -1,0 +1,6 @@
+# keep most of the template files
+!*
+!*/
+
+# ignore some unwanted files
+.DS_Store

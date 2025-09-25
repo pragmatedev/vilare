@@ -1,8 +1,0 @@
-dist
-vendor
-node_modules
-*.lock
-*-lock.json
-*.js
-*.css
-*.scss
