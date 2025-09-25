@@ -1,0 +1,39 @@
+@use 'sass:map';
+
+$breakpoints: (
+  sm: 544,
+  md: 768,
+  lg: 1024,
+  xl: 1200,
+  xxl: 1440,
+) !default;
+
+@mixin up($breakpoint, $offset: 0) {
+  @media (min-width: #{get($breakpoint) + $offset + 'px'}) {
+    @content;
+  }
+}
+
+@mixin down($breakpoint, $offset: 0) {
+  @media (max-width: #{get($breakpoint) + $offset - 1 + 'px'}) {
+    @content;
+  }
+}
+
+@mixin between($lower, $upper) {
+  @media (min-width: (get($lower) + 'px')) and (max-width: (get($upper) - 1 + 'px')) {
+    @content;
+  }
+}
+
+@function breakpoint($breakpoint) {
+  @return #{get($breakpoint) + 'px'};
+}
+
+@function get($breakpoint) {
+  @if not map.has-key($breakpoints, $breakpoint) {
+    @error 'Invalid Breakpoint: #{$breakpoint}';
+  }
+
+  @return map.get($breakpoints, $breakpoint);
+}

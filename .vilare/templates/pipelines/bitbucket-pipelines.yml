@@ -1,0 +1,24 @@
+definitions:
+  steps:
+    - step: &lint
+        name: Lint
+        image: pragmatedev/vitewp-docker
+        script:
+          - cd wp-content/themes/vilare
+          - composer install
+          - yarn install
+          - yarn lint
+        caches:
+          - composer
+          - node
+  caches:
+    composer: wp-content/themes/vilare/vendor
+    node: wp-content/themes/vilare/node_modules
+
+pipelines:
+  custom:
+    lint:
+      - step: *lint
+  pull-requests:
+    '**':
+      - step: *lint

@@ -1,0 +1,195 @@
+%container-full {
+  width: var(--container-full);
+  margin-left: calc((var(--container-full) - 100%) / -2);
+}
+
+%container-xxl {
+  $gutter: 10;
+
+  max-width: calc(100% - #{$gutter}px * 2);
+  margin-right: auto;
+  margin-left: auto;
+
+  @include up(xxl, $gutter * 2) {
+    max-width: var(--container-xxl);
+  }
+}
+
+%container-xl {
+  $gutter: 10;
+
+  max-width: calc(100% - #{$gutter}px * 2);
+  margin-right: auto;
+  margin-left: auto;
+
+  @include up(xl, $gutter * 2) {
+    max-width: var(--container-xl);
+  }
+}
+
+%container-lg {
+  $gutter: 10;
+
+  max-width: calc(100% - #{$gutter}px * 2);
+  margin-right: auto;
+  margin-left: auto;
+
+  @include up(lg, $gutter * 2) {
+    max-width: var(--container-lg);
+  }
+}
+
+%container-md {
+  $gutter: 10;
+
+  max-width: calc(100% - #{$gutter}px * 2);
+  margin-right: auto;
+  margin-left: auto;
+
+  @include up(md, $gutter * 2) {
+    max-width: var(--container-md);
+  }
+}
+
+%container-sm {
+  $gutter: 10;
+
+  max-width: calc(100% - #{$gutter}px * 2);
+  margin-right: auto;
+  margin-left: auto;
+
+  @include up(sm, $gutter * 2) {
+    max-width: var(--container-sm);
+  }
+}
+
+%font-primary {
+  font-family: var(--font-primary);
+}
+
+%font-secondary {
+  font-family: var(--font-secondary);
+}
+
+%text-h1 {
+  font-size: 4rem;
+  font-weight: 600;
+
+  @include up(md) {
+    font-size: 4rem;
+  }
+}
+
+%text-h2 {
+  font-size: 3.5rem;
+  font-weight: 600;
+
+  @include up(md) {
+    font-size: 3.5rem;
+  }
+}
+
+%text-h3 {
+  font-size: 3rem;
+  font-weight: 600;
+
+  @include up(md) {
+    font-size: 3rem;
+  }
+}
+
+%text-h4 {
+  font-size: 2.25rem;
+  font-weight: 600;
+
+  @include up(md) {
+    font-size: 2.25rem;
+  }
+}
+
+%text-h5 {
+  font-size: 2rem;
+  font-weight: 600;
+
+  @include up(md) {
+    font-size: 2rem;
+  }
+}
+
+%text-h6 {
+  font-size: 1.6rem;
+  font-weight: 600;
+
+  @include up(md) {
+    font-size: 1.6rem;
+  }
+}
+
+%text-xl {
+  font-size: 2rem;
+  line-height: 1.5;
+
+  @include up(md) {
+    font-size: 2rem;
+  }
+}
+
+%text-lg {
+  font-size: 1.8rem;
+  line-height: 1.5;
+
+  @include up(md) {
+    font-size: 1.8rem;
+  }
+}
+
+%text-md {
+  font-size: 1.6rem;
+  line-height: 1.5;
+
+  @include up(md) {
+    font-size: 1.6rem;
+  }
+}
+
+%text-sm {
+  font-size: 1.4rem;
+  line-height: 1.5;
+
+  @include up(md) {
+    font-size: 1.4rem;
+  }
+}
+
+%text-xs {
+  font-size: 1.2rem;
+  line-height: 1.5;
+
+  @include up(md) {
+    font-size: 1.2rem;
+  }
+}
+
+%radius-full {
+  border-radius: var(--radius-full);
+}
+
+%radius-xxl {
+  border-radius: var(--radius-xxl);
+}
+
+%radius-xl {
+  border-radius: var(--radius-xl);
+}
+
+%radius-lg {
+  border-radius: var(--radius-lg);
+}
+
+%radius-md {
+  border-radius: var(--radius-md);
+}
+
+%radius-sm {
+  border-radius: var(--radius-sm);
+}

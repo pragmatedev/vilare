@@ -1,0 +1,121 @@
+.-container-full {
+  @extend %container-full;
+}
+
+.-container-xxl {
+  @extend %container-xxl;
+}
+
+.-container-xl {
+  @extend %container-xl;
+}
+
+.-container-lg {
+  @extend %container-lg;
+}
+
+.-container-md {
+  @extend %container-md;
+}
+
+.-container-sm {
+  @extend %container-sm;
+}
+
+.-wrapper {
+  @extend %container-xxl;
+}
+
+.-wrapper-full {
+  @extend %container-full;
+}
+
+.-font-primary {
+  @extend %font-primary;
+}
+
+.-font-secondary {
+  @extend %font-secondary;
+}
+
+.-text-h1 {
+  @extend %text-h1;
+}
+
+.-text-h2 {
+  @extend %text-h2;
+}
+
+.-text-h3 {
+  @extend %text-h3;
+}
+
+.-text-h4 {
+  @extend %text-h4;
+}
+
+.-text-h5 {
+  @extend %text-h5;
+}
+
+.-text-h6 {
+  @extend %text-h6;
+}
+
+.-text-xl {
+  @extend %text-xl;
+}
+
+.-text-lg {
+  @extend %text-lg;
+}
+
+.-text-md {
+  @extend %text-md;
+}
+
+.-text-sm {
+  @extend %text-sm;
+}
+
+.-text-xs {
+  @extend %text-xs;
+}
+
+.-radius-full {
+  @extend %radius-full;
+}
+
+.-radius-xxl {
+  @extend %radius-xxl;
+}
+
+.-radius-xl {
+  @extend %radius-xl;
+}
+
+.-radius-lg {
+  @extend %radius-lg;
+}
+
+.-radius-md {
+  @extend %radius-md;
+}
+
+.-radius-sm {
+  @extend %radius-sm;
+}
+
+.-noscroll {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+.-noscrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

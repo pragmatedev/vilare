@@ -1,0 +1,50 @@
+@font-face {
+  font-family: Montserrat;
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../fonts/Montserrat.woff2') format('woff2'),
+    url('../fonts/Montserrat.woff') format('woff');
+}
+
+@font-face {
+  font-family: Montserrat;
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+  src:
+    url('../fonts/Montserrat-Italic.woff2') format('woff2'),
+    url('../fonts/Montserrat-Italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'SourceSans3';
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url('../fonts/SourceSans3.woff2') format('woff2'),
+    url('../fonts/SourceSans3.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'SourceSans3';
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+  src:
+    url('../fonts/SourceSans3-Italic.woff2') format('woff2'),
+    url('../fonts/SourceSans3-Italic.woff') format('woff');
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: 1.6rem;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
