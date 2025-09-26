@@ -34,6 +34,29 @@ class Directives
 
         $content = vilare()->filesystem()->get($path);
 
+        if (preg_match('/<svg[^>]*\b(width|height)="([^"]+)"[^>]*\b(width|height)="([^"]+)"[^>]*>/i', $content, $matches)) { // phpcs:ignore Generic.Files.LineLength.TooLong
+            $width = 0;
+            $height = 0;
+
+            if (strtolower($matches[1]) === 'width') {
+                $width = floatval($matches[2]);
+                $height = floatval($matches[4]);
+            } else {
+                $height = floatval($matches[2]);
+                $width = floatval($matches[4]);
+            }
+
+            if ($width > 0 && $height > 0) {
+                if ($height > $width) {
+                    $args['class'] = $args['class'] . ' -aspect-vertical';
+                } elseif ($width > $height) {
+                    $args['class'] = $args['class'] . ' -aspect-horizontal';
+                } else {
+                    $args['class'] = $args['class'] . ' -aspect-square';
+                }
+            }
+        }
+
         if (! empty($args['class']) && is_string($args['class'])) {
             $args['class'] = sanitize_text_field($args['class']);
 
