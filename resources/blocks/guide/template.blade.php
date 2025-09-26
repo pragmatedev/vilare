@@ -85,9 +85,9 @@
 
     <div
         class="block-guide__table"
-        style="--cols: 10"
+        style="--cols: 5"
     >
-        @foreach (['gray-50', 'gray-100', 'gray-200', 'gray-300', 'gray-400', 'gray-500', 'gray-600', 'gray-700', 'gray-800', 'gray-900'] as $item)
+        @foreach (['primary-50', 'primary-100', 'primary-200', 'primary-300', 'primary-400', 'primary-500', 'primary-600', 'primary-700', 'primary-800', 'primary-900'] as $item)
             <div class="block-guide__col">
                 <div
                     style="
@@ -127,7 +127,7 @@
                 <div
                     class="-{{ $item }}"
                     style="
-                        background-color: var(--color-gray-100);
+                        background-color: var(--color-primary-100);
                         width: 100%;
                         height: 5rem;
                         cursor: pointer;
@@ -262,7 +262,7 @@
                     width: 100%;
                     min-height: 5rem;
                     padding: 1rem;
-                    background: var(--color-gray-50);
+                    background: var(--color-primary-50);
                 "
             >
                 <x-button

@@ -3,7 +3,10 @@
   @extend %font-secondary;
 
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
 
   &:focus-visible {

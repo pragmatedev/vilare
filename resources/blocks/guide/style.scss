@@ -11,7 +11,7 @@
 
     a {
       font-weight: 300;
-      color: var(--color-gray-400);
+      color: var(--color-primary-400);
       text-decoration: none;
     }
   }
@@ -59,7 +59,7 @@
 
     position: relative;
     padding: 1rem;
-    color: var(--color-gray-300);
+    color: var(--color-primary-300);
     background-color: #1E2A39;
 
     pre {
@@ -77,13 +77,13 @@
         cursor: pointer;
         padding: 1rem 1.5rem;
         border: none;
-        border-bottom: 1px solid var(--color-gray-700);
-        color: var(--color-gray-700);
+        border-bottom: 1px solid var(--color-primary-700);
+        color: var(--color-primary-700);
         background: transparent;
 
         &.-active {
-          border-color: var(--color-gray-400);
-          color: var(--color-gray-400);
+          border-color: var(--color-primary-400);
+          color: var(--color-primary-400);
         }
       }
     }
@@ -91,6 +91,7 @@
     &-content {
       overflow: scroll;
       padding: 1.5rem;
+      font-size: 1.6rem;
     }
 
     &-copy {
@@ -110,7 +111,7 @@
     left: 1rem;
     padding: 1rem 2rem;
     border-radius: var(--radius-md);
-    color: var(--color-gray-50);
+    color: var(--color-primary-50);
     background-color: var(--color-black);
   }
 }

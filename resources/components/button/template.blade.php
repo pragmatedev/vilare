@@ -1,11 +1,19 @@
 <button
     {{
-        $attributes->class(['component-button'])->merge([
-            'type' => $type,
-            'class' => join(' ', ["-size-{$size}", "-style-{$style}"]),
-            'x-data' => 'component_button',
-        ])
+        $attributes
+            ->class([
+                'component-button',
+                "-style-{$style}",
+            ])
+            ->merge([
+                'type' => $type,
+                'x-data' => 'component_button',
+            ])
     }}
 >
+    @if ($slot->isNotEmpty())
+        {{ $slot }}
+    @endif
+
     {{ $label }}
 </button>

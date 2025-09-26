@@ -39,6 +39,9 @@ html {
 }
 
 body {
+  @extend %font-secondary;
+  @extend %text-md;
+
   margin: 0;
   padding: 0;
 
@@ -53,7 +56,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-secondary);
+  @extend %font-primary;
 
   &:first-child {
     margin-top: 0;
