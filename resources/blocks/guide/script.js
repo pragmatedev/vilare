@@ -4,10 +4,17 @@ document.addEventListener('alpine:init', () => {
 
     copy(content) {
       navigator.clipboard.writeText(content);
+
       this.tooltip = true;
-      setTimeout(() => {
+
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+
+      this.timeout = setTimeout(() => {
         this.tooltip = false;
-      }, 1500);
+        this.timeout = null;
+      }, 1000);
     },
   }));
 });

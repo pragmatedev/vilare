@@ -8,77 +8,97 @@
 
   &__header {
     text-align: center;
+
+    a {
+      font-weight: 300;
+      color: var(--color-gray-400);
+      text-decoration: none;
+    }
   }
 
   &__table {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+    &:has(.block-guide__row) {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    &:has(.block-guide__col) {
+      display: grid;
+      grid-template-columns: repeat(var(--cols, 5), 1fr);
+      gap: 2rem;
+    }
   }
 
   &__row {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 2rem;
     align-items: center;
     justify-content: space-between;
 
     @include up(sm) {
       flex-direction: row;
     }
+  }
 
-    & > div {
-      @include up(sm) {
-        flex: 1;
-      }
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__code {
+    @extend %radius-lg;
+
+    position: relative;
+    padding: 1rem;
+    color: var(--color-gray-300);
+    background-color: #1E2A39;
+
+    pre {
+      margin: 0;
+      color: inherit;
     }
 
-    &.-text {
-      position: relative;
-    }
-
-    &.-font {
-      & > div {
-        @extend %text-h2;
-      }
-    }
-
-    &.-color {
-      & > div {
-        @extend %radius-md;
-
-        width: 100%;
-        height: 4rem;
-      }
-    }
-
-    &.-radius {
-      & > div {
-        width: 100%;
-        height: 4rem;
-        background-color: var(--color-gray-100);
-      }
-    }
-
-    &.-container {
-      @extend %radius-md;
-
+    &-header {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 4rem;
-      background: var(--color-gray-100);
+      gap: 0.5rem;
+      margin-top: -0.5rem;
+      margin-bottom: 0.5rem;
+
+      button {
+        cursor: pointer;
+        padding: 1rem 1.5rem;
+        border: none;
+        border-bottom: 1px solid var(--color-gray-700);
+        color: var(--color-gray-700);
+        background: transparent;
+
+        &.-active {
+          border-color: var(--color-gray-400);
+          color: var(--color-gray-400);
+        }
+      }
     }
 
-    button {
-      width: 15rem;
-      padding: 0.5rem;
+    &-content {
+      padding: 1.5rem;
+    }
+
+    &-copy {
+      cursor: pointer;
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
     }
   }
 
   &__tooltip {
     @extend %text-xs;
+    @extend %font-secondary;
 
     position: fixed;
     top: 1rem;
@@ -86,6 +106,6 @@
     padding: 1rem 2rem;
     border-radius: var(--radius-md);
     color: var(--color-gray-50);
-    background-color: var(--color-gray-950);
+    background-color: var(--color-black);
   }
 }
