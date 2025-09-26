@@ -59,6 +59,35 @@ abstract class Component extends ComponentBase
         return $data;
     }
 
+    final public function dd($mode = 'html'): string
+    {
+        switch ($mode) {
+            case 'schema':
+                return implode(
+                    "\r\n",
+                    array_map(
+                        fn($key, $value) => sprintf('%s="%s"', $key, $value),
+                        array_keys($this->getSchema()),
+                        $this->getSchema()
+                    )
+                );
+
+            default:
+                return sprintf(
+                    '<x-%s %s />',
+                    $this->getId(),
+                    implode(
+                        ' ',
+                        array_map(
+                            fn($key, $value) => sprintf('%s="%s"', $key, $value),
+                            array_keys($this->data),
+                            $this->data
+                        )
+                    )
+                );
+        }
+    }
+
     final public function enqueue(): void
     {
         vilare()->assets()->enqueue(

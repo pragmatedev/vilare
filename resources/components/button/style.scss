@@ -1,0 +1,69 @@
+.component-button {
+  @extend %radius-sm;
+  @extend %font-secondary;
+
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+
+  &:focus-visible {
+    outline: var(--color-black) dashed 0.1rem;
+  }
+
+  &.-size-sm {
+    @extend %text-xs;
+
+    padding: 0.25rem 0.75rem;
+    outline-offset: 0.2rem;
+  }
+
+  &.-size-md {
+    @extend %text-xs;
+
+    padding: 0.5rem 1rem;
+    outline-offset: 0.3rem;
+  }
+
+  &.-size-lg {
+    @extend %text-sm;
+
+    padding: 0.5rem 1.25rem;
+    outline-offset: 0.4rem;
+  }
+
+  &.-size-xl {
+    @extend %text-sm;
+
+    padding: 0.75rem 2rem;
+    outline-offset: 0.5rem;
+  }
+
+  &.-size-xxl {
+    @extend %text-md;
+
+    padding: 1rem 2.5rem;
+    outline-offset: 0.5rem;
+  }
+
+  &.-style-solid {
+    border: 1px solid var(--color-black);
+    color: var(--color-white);
+    background-color: var(--color-black);
+
+    &:hover {
+      color: var(--color-black);
+      background-color: transparent;
+    }
+  }
+
+  &.-style-outline {
+    border: 1px solid var(--color-black);
+    color: var(--color-black);
+    background-color: transparent;
+
+    &:hover {
+      color: var(--color-white);
+      background-color: var(--color-black);
+    }
+  }
+}
