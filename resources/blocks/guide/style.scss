@@ -25,8 +25,12 @@
 
     &:has(.block-guide__col) {
       display: grid;
-      grid-template-columns: repeat(var(--cols, 5), 1fr);
+      grid-template-columns: repeat(1, 1fr);
       gap: 2rem;
+
+      @include up(md) {
+        grid-template-columns: repeat(var(--cols, 5), 1fr);
+      }
     }
   }
 
@@ -85,6 +89,7 @@
     }
 
     &-content {
+      overflow: scroll;
       padding: 1.5rem;
     }
 
