@@ -10,6 +10,8 @@
     text-align: center;
 
     a {
+      @extend %font-secondary;
+
       font-weight: 300;
       color: var(--color-primary-400);
       text-decoration: none;
