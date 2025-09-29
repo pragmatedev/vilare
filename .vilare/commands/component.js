@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
+import shell from 'shelljs';
+import { camelCase, kebabCase, snakeCase, startCase, upperFirst } from 'lodash-es';
 import { Command } from 'commander';
 
 class Controller {
@@ -59,18 +61,13 @@ class Controller {
         message: 'ID: ',
         when: () => !options.id,
       },
-      {
-        type: 'input',
-        name: 'title',
-        message: 'Title: ',
-        when: () => !options.title,
-      },
     ]);
 
     const config = {
       type: options.type || inputs.type,
-      id: options.id || inputs.id,
-      title: options.title || inputs.title,
+      id: kebabCase(options.id || inputs.id),
+      name: upperFirst(camelCase(options.id || inputs.id)),
+      title: startCase(camelCase(options.id || inputs.id)),
     };
 
     const files = this.getFiles(config);
@@ -84,11 +81,13 @@ class Controller {
 
       fs.copyFileSync(file.source, file.destination);
 
-      const content = fs.readFileSync(file.destination, 'utf8')
-        .replace(/Base/g, config.title)
-        .replace(/base/g, config.id);
+      shell.exec(`sed -i '' "s|base|${config.id}|g" ${file.destination}`);
+      shell.exec(`sed -i '' "s|Base|${config.name}|g" ${file.destination}`);
 
-      fs.writeFileSync(file.destination, content, 'utf8');
+      shell.exec(`sed -i '' "s|setTitle('${config.name}')|setTitle('${config.title}')|g" ${file.destination}`);
+      shell.exec(`sed -i '' "s|'title' => '${config.name}'|'title' => '${config.title}'|g" ${file.destination}`);
+
+      shell.exec(`sed -i '' "s|_${config.id}|_${snakeCase(config.id)}|g" ${file.destination}`);
     }
 
     console.log(`✅ ${config.title} ${config.type} created successfully`);
@@ -103,7 +102,7 @@ class Controller {
       throw new Error('id must be kebab-case');
     }
 
-    if (!/^[A-Z][a-zA-Z]*$/.test(config.title)) {
+    if (!/^[A-Z][a-zA-Z]*$/.test(config.name)) {
       throw new Error('title must be PascalCase');
     }
 
@@ -113,7 +112,7 @@ class Controller {
           throw new Error(`❌ ${config.id} block already exists`);
         }
 
-        if (fs.existsSync(`${this.theme.path}/app/Blocks/${config.title}.php`)) {
+        if (fs.existsSync(`${this.theme.path}/app/Blocks/${config.name}.php`)) {
           throw new Error(`❌ ${config.id} block already exists`);
         }
 
@@ -132,7 +131,7 @@ class Controller {
           },
           {
             source: `${this.templates.path}/blocks/base/Base.php`,
-            destination: `${this.theme.path}/app/Blocks/${config.title}.php`,
+            destination: `${this.theme.path}/app/Blocks/${config.name}.php`,
           },
         ];
 
@@ -141,7 +140,7 @@ class Controller {
           throw new Error(`❌ ${config.id} component already exists`);
         }
 
-        if (fs.existsSync(`${this.theme.path}/app/Components/${config.title}.php`)) {
+        if (fs.existsSync(`${this.theme.path}/app/Components/${config.name}.php`)) {
           throw new Error(`❌ ${config.id} component already exists`);
         }
 
@@ -160,7 +159,7 @@ class Controller {
           },
           {
             source: `${this.templates.path}/components/base/Base.php`,
-            destination: `${this.theme.path}/app/Components/${config.title}.php`,
+            destination: `${this.theme.path}/app/Components/${config.name}.php`,
           },
         ];
 
@@ -169,7 +168,7 @@ class Controller {
           throw new Error(`❌ ${config.id} template already exists`);
         }
 
-        if (fs.existsSync(`${this.theme.path}/app/Templates/${config.title}.php`)) {
+        if (fs.existsSync(`${this.theme.path}/app/Templates/${config.name}.php`)) {
           throw new Error(`❌ ${config.id} template already exists`);
         }
 
@@ -188,7 +187,7 @@ class Controller {
           },
           {
             source: `${this.templates.path}/templates/base/Base.php`,
-            destination: `${this.theme.path}/app/Templates/${config.title}.php`,
+            destination: `${this.theme.path}/app/Templates/${config.name}.php`,
           },
         ];
 
@@ -217,7 +216,6 @@ export const component = () => {
     .description('create a new component')
     .option('-y, --type <type>', 'the type of the component')
     .option('-i, --id <id>', 'the id of the component')
-    .option('-t, --title <title>', 'the title of the component')
     .action(async(options) => {
       try {
         await controller.create(options);

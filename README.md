@@ -91,21 +91,21 @@ The project is created using a [component-driven](https://pragmate.dev/architect
 
 Components are the smallest units used to build websites supported by [Laravel Blade](https://laravel.com/docs/12.x/blade#rendering-components). They are available throughout the website and should include only the most basic functionalities to maintain simplicity.
 
-- Creation: `yarn vilare component create --type=button --id=button --title=Button`
+- Creation: `yarn vilare component create --type=component --id=button`
 - Usage: `<x-button />`
 
 ### Block
 
 Blocks are larger units integrated with [ACF and Gutenberg](https://www.advancedcustomfields.com/resources/blocks/), used to define the layout of the website. They can include more complex functionalities and utilize granular components. When possible, blocks should use [InnerBlocks](https://www.advancedcustomfields.com/resources/acf-blocks-using-innerblocks-and-parent-child-relationships/) to provide flexibility for clients and should [utilize container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries) instead of traditional media queries.
 
-- Creation: `yarn vilare component create --type=block --id=newsletter --title=Newsletter`
+- Creation: `yarn vilare component create --type=block --id=newsletter`
 - Usage: `{!! block('newsletter')->render(['title' => 'custom title']) !!}`
 
 ### Template
 
 Templates are the largest components. Those defined in the theme are automatically resolved and rendered by WordPress.
 
-- Creation: `yarn vilare component create --type=template --id=article --title=Article`
+- Creation: `yarn vilare component create --type=template --id=article`
 - Usage: Choose page template from WordPress admin panel.
 
 ### Example
@@ -117,7 +117,7 @@ Templates are the largest components. Those defined in the theme are automatical
     4.  [Styles](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/style.scss): Used for defining visual layer.
     5.  [ACF Fields](https://github.com/pragmatedev/vilare/blob/master/resources/fields/group_67a362c847851.json): Block fields saved with [Local JSON](https://www.advancedcustomfields.com/resources/local-json/) implementing [block schema](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L13-L17) for Gutenberg.
 2.  Block Creation
-    1.  Use the `yarn vilare component create --type=block --id=newsletter --title=Newsletter` command in the theme's root. The command will create a new block and automatically load it into the system. You might need to restart your development server.
+    1.  Use the `yarn vilare component create --type=block --id=newsletter` command in the theme's root. The command will create a new block and automatically load it into the system. You might need to restart your development server.
     2.  Define the [block schema](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L13-L17) and fill it with the [default values](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L18-L22) when needed. Block schema uses the [Laravel Validation](https://laravel.com/docs/10.x/validation#available-validation-rules) component, but if you're not familiar with this yet, please at least define the simplest typing schema to check if the passed is a [string](https://laravel.com/docs/12.x/validation#rule-string), [array](https://laravel.com/docs/12.x/validation#rule-array), [boolean](https://laravel.com/docs/12.x/validation#rule-boolean), or [required](https://laravel.com/docs/12.x/validation#rule-required).
     3.  Go to the ACF Field Groups, clone the `Block: Base` group, and adjust to the newly created block while keeping the same naming conventions. The field naming and validation rules should reflect the ones defined in the schema.
 3.  Block Rendering

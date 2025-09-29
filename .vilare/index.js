@@ -5,6 +5,7 @@ import { Command } from 'commander';
 import { database } from './commands/database.js';
 import { component } from './commands/component.js';
 import { install } from './commands/install.js';
+import { model } from './commands/model.js';
 import { release } from './commands/release.js';
 import { test } from './commands/test.js';
 
@@ -24,6 +25,7 @@ program
 
 program.addCommand(database());
 program.addCommand(component());
+program.addCommand(model());
 program.addCommand(release());
 program.addCommand(test());
 program.addCommand(install());
