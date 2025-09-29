@@ -7,6 +7,7 @@ import { component } from './commands/component.js';
 import { install } from './commands/install.js';
 import { model } from './commands/model.js';
 import { release } from './commands/release.js';
+import { deploy } from './commands/deploy.js';
 import { test } from './commands/test.js';
 
 const env = path.resolve('../../../.env');
@@ -27,6 +28,7 @@ program.addCommand(database());
 program.addCommand(component());
 program.addCommand(model());
 program.addCommand(release());
+program.addCommand(deploy());
 program.addCommand(test());
 program.addCommand(install());
 
