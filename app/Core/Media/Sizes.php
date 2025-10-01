@@ -34,7 +34,7 @@ class Sizes
             ]
         );
 
-        $validated = \Vilare\Core\Validation::validate(
+        $validated = vilare()->validation()->validate(
             $sizes,
             [
                 'thumbnail' => 'required',

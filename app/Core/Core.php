@@ -13,6 +13,7 @@ use Vilare\Core\Hooks;
 use Vilare\Core\Integrations\Integrations;
 use Vilare\Core\Media\Media;
 use Vilare\Core\Templates\Templates;
+use Vilare\Core\Validation;
 use Illuminate\Filesystem\Filesystem;
 
 abstract class Core
@@ -35,6 +36,8 @@ abstract class Core
 
     private Templating $templating;
 
+    private Validation $validation;
+
     private static ?App $instance = null;
 
     protected function __construct()
@@ -48,6 +51,7 @@ abstract class Core
         $this->media = App::init(new Media());
         $this->templates = App::init(new Templates());
         $this->templating = App::init(new Templating());
+        $this->validation = App::init(new Validation());
 
         if (! empty(WP_DEBUG)) {
             \Vilare\App::init(new Debugger());
@@ -115,6 +119,11 @@ abstract class Core
     public function templating(): Templating
     {
         return $this->templating;
+    }
+
+    public function validation(): Validation
+    {
+        return $this->validation;
     }
 
     public static function init(object $module): object

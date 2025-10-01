@@ -2,7 +2,6 @@
 
 namespace Vilare\Core\Components;
 
-use Vilare\Core\Validation;
 use Vilare\Core\Blade\TemplatingException;
 use Illuminate\View\Component as ComponentBase;
 use Illuminate\View\ComponentAttributeBag;
@@ -45,7 +44,7 @@ abstract class Component extends ComponentBase
         $data = apply_filters("vilare_components_{$this->getId()}_data", $data);
 
         if ($this->hasSchema()) {
-            $result = Validation::validate($data, $this->getSchema());
+            $result = vilare()->validation()->validate($data, $this->getSchema());
 
             if (is_wp_error($result)) {
                 throw new TemplatingException(esc_attr($result->get_error_message()));

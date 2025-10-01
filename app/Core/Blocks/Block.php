@@ -2,7 +2,6 @@
 
 namespace Vilare\Core\Blocks;
 
-use Vilare\Core\Validation;
 use Vilare\Core\Integrations\ACFInnerBlocks;
 use Vilare\Core\Blade\TemplatingException;
 use Illuminate\View\ComponentAttributeBag;
@@ -46,7 +45,7 @@ abstract class Block
         $data = apply_filters("vilare_blocks_{$this->getId()}_data", $data);
 
         if ($this->hasSchema()) {
-            $result = Validation::validate($data, $this->getSchema());
+            $result = vilare()->validation()->validate($data, $this->getSchema());
 
             if (is_wp_error($result)) {
                 throw new TemplatingException(esc_attr($result->get_error_message()));
