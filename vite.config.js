@@ -11,11 +11,12 @@ export default defineConfig({
     rollupOptions: {
       input: [
         'resources/scripts/alpine.js',
-        'resources/scripts/swiper.js',
         'resources/styles/swiper.scss',
-        'resources/scripts/scripts.js',
+        'resources/scripts/swiper.js',
         'resources/styles/styles.scss',
+        'resources/scripts/scripts.js',
         'resources/styles/admin.scss',
+        'resources/scripts/admin.js',
       ],
       output: {
         entryFileNames: '[hash].js',

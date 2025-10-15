@@ -54,7 +54,19 @@ class Assets
      */
     public function admin(): void
     {
-        $this->enqueue('styles/admin.scss', ['handle' => 'admin']);
+        $this->enqueue(
+            'styles/admin.scss',
+            [
+                'handle' => 'admin',
+            ]
+        );
+
+        $this->enqueue(
+            'scripts/admin.js',
+            [
+                'handle' => 'admin',
+            ]
+        );
 
         if ('post' === get_current_screen()->base && has_blocks()) {
             $this->front();
