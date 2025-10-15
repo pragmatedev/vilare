@@ -55,22 +55,39 @@ class Assets
     public function admin(): void
     {
         $this->enqueue(
+            'scripts/alpine.js',
+            [
+                'handle' => 'alpine',
+            ]
+        );
+
+        $this->enqueue(
             'styles/admin.scss',
             [
-                'handle' => 'admin',
+                'handle' => 'style',
             ]
         );
 
         $this->enqueue(
             'scripts/admin.js',
             [
-                'handle' => 'admin',
+                'handle' => 'script',
+                'deps' => ['alpine'],
             ]
         );
 
-        if ('post' === get_current_screen()->base && has_blocks()) {
-            $this->front();
-        }
+        wp_localize_script(
+            'script',
+            'vilare',
+            apply_filters(
+                'vilare_assets_localize',
+                [
+                    'ajax' => admin_url('admin-ajax.php'),
+                ]
+            )
+        );
+
+        wp_add_inline_style('style', 'body { [x-cloak] { display: none } }');
     }
 
     /**

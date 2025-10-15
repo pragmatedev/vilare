@@ -1,21 +1,29 @@
 @import
   'mixins',
+  'modifiers',
   'variables',
-  'modifiers';
+  'fonts',
+  'utilities';
 
-.wp-admin {
-  .is-root-container {
-    & > .wp-block {
-      width: 90% !important;
-      max-width: 100dvw !important;
-      margin: 5rem 0;
-    }
-  }
+html {
+  font-size: 10px;
+}
 
+body {
   .editor-sidebar {
     .acf-block-fields {
       .acf-field {
         width: 100% !important;
+      }
+    }
+  }
+
+  .wp-list-table {
+    .media-icon {
+      img {
+        width: 60px !important;
+        height: 60px !important;
+        object-fit: cover;
       }
     }
   }
