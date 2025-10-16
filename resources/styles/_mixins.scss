@@ -26,6 +26,18 @@ $breakpoints: (
   }
 }
 
+@mixin container($value, $mode: 'up') {
+  @if $mode == 'down' {
+    @container (width < #{$value}) {
+      @content;
+    }
+  } @else {
+    @container (width >= #{$value}) {
+      @content;
+    }
+  }
+}
+
 @function breakpoint($breakpoint) {
   @return #{get($breakpoint) + 'px'};
 }
