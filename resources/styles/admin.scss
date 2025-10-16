@@ -5,7 +5,7 @@
   'fonts',
   'utilities';
 
-html {
+html:has(.block-editor) {
   font-size: 10px;
 }
 
