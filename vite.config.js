@@ -30,8 +30,8 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @import "@styles/abstracts/_mixins.scss";
-          @import "@styles/abstracts/_modifiers.scss";
+          @import "@styles/_mixins.scss";
+          @import "@styles/_modifiers.scss";
         `,
       },
     },
