@@ -12,6 +12,7 @@ use Vilare\Core\Debugger;
 use Vilare\Core\Hooks;
 use Vilare\Core\Integrations\Integrations;
 use Vilare\Core\Media\Media;
+use Vilare\Core\Plugins\Plugins;
 use Vilare\Core\Templates\Templates;
 use Vilare\Core\Validation;
 use Illuminate\Filesystem\Filesystem;
@@ -32,6 +33,8 @@ abstract class Core
 
     private Media $media;
 
+    private Plugins $plugins;
+
     private Templates $templates;
 
     private Templating $templating;
@@ -49,6 +52,7 @@ abstract class Core
         $this->filesystem = new Filesystem();
         $this->integrations = App::init(new Integrations());
         $this->media = App::init(new Media());
+        $this->plugins = App::init(new Plugins());
         $this->templates = App::init(new Templates());
         $this->templating = App::init(new Templating());
         $this->validation = App::init(new Validation());
@@ -109,6 +113,11 @@ abstract class Core
     public function media(): Media
     {
         return $this->media;
+    }
+
+    public function plugins(): Plugins
+    {
+        return $this->plugins;
     }
 
     public function templates(): Templates
