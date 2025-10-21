@@ -41,7 +41,7 @@ class Assets
             apply_filters(
                 'vilare_assets_localize',
                 [
-                    'ajax' => admin_url('admin-ajax.php'),
+                    'ajax_url' => admin_url('admin-ajax.php'),
                 ]
             )
         );

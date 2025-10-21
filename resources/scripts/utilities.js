@@ -1,11 +1,23 @@
 /**
+ * Send a POST request to the AJAX endpoint.
+ *
  * @param {FormData} payload
+ * @returns {Promise<{success: boolean, data: object}>}
  */
-export const ajax = async(payload) => {
+/**
+ * Send a POST request to the AJAX endpoint.
+ *
+ * @param {object} payload
+ * @param {FormData} body
+ * @returns {Promise<{success: boolean, data: object}>}
+ */
+export const ajax = async(payload, body = new FormData()) => {
   try {
-    const response = await fetch(window.vilare.ajax, {
+    Object.keys(payload).forEach(key => body.append(key, payload[key]));
+
+    const response = await fetch(window.vilare.ajax_url, {
       method: 'POST',
-      body: payload,
+      body,
     });
 
     if (!response.ok) {
@@ -27,21 +39,12 @@ export const ajax = async(payload) => {
 };
 
 /**
- * @param {string} html
- */
-export const node = (html) => {
-  const template = document.createElement('template');
-
-  template.innerHTML = html.trim();
-
-  return template.content.firstChild;
-};
-
-/**
+ * Smooth scroll to a target element.
+ *
  * @param {HTMLElemnt} target
  * @param {number} duration
  * @param {number} offset
- * @returns
+ * @returns {Promise<void>}
  */
 export const scroll = async(target, duration = 500, offset = 0) => {
   document.documentElement.classList.remove('scroll-smooth');
@@ -72,4 +75,34 @@ export const scroll = async(target, duration = 500, offset = 0) => {
 
     window.requestAnimationFrame(animate);
   });
+};
+
+/**
+ * Create a new node from HTML string.
+ *
+ * @param {string} html
+ * @returns {HTMLElement}
+ */
+export const node = (html) => {
+  const template = document.createElement('template');
+
+  template.innerHTML = html.trim();
+
+  return template.content.firstChild;
+};
+
+/**
+ * Provide the utilities to the global object.
+ *
+ * @param {object} object
+ * @returns {void}
+ */
+export const provide = (object) => {
+  if (!object.ajax) {
+    object.ajax = ajax;
+  }
+
+  if (!object.scroll) {
+    object.scroll = scroll;
+  }
 };
