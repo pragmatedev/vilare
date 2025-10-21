@@ -149,6 +149,11 @@ abstract class Entry
         return true;
     }
 
+    public function getTerms(string $taxonomy): array
+    {
+        return get_the_terms($this->getId(), $taxonomy);
+    }
+
     public function getMeta(string $key, mixed $fallback = null): mixed
     {
         $value = get_field($key, $this->getId());
