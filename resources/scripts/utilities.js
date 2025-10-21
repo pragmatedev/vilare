@@ -3,7 +3,7 @@
  */
 export const ajax = async(payload) => {
   try {
-    const response = await fetch(window.fs.ajax, {
+    const response = await fetch(window.vilare.ajax, {
       method: 'POST',
       body: payload,
     });
