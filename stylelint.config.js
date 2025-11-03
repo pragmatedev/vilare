@@ -30,6 +30,7 @@ export default {
         unspecified: 'bottomAlphabetical',
       },
     ],
+    'scss/dollar-variable-empty-line-before': null,
     '@stylistic/color-hex-case': 'upper',
     '@stylistic/string-quotes': 'single',
     '@stylistic/block-closing-brace-newline-after': [
