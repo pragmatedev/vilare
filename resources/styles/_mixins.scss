@@ -27,6 +27,10 @@ $breakpoints: (
 }
 
 @mixin container($value, $mode: 'up') {
+  @if map.has-key($breakpoints, $value) {
+    $value: get($value) + 'px';
+  }
+
   @if $mode == 'down' {
     @container (width < #{$value}) {
       @content;
