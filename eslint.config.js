@@ -5,7 +5,10 @@ export default [
 
   {
     rules: {
+      curly: ['error', 'all'],
+      'no-empty-function': ['error'],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/curly-newline': ['error', 'always'],
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/space-before-function-paren': ['error', 'never'],
       '@stylistic/padding-line-between-statements': ['error', {
