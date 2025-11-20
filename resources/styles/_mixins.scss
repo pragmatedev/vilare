@@ -1,4 +1,6 @@
 @use 'sass:map';
+@use 'sass:meta';
+@use 'sass:list';
 
 $breakpoints: (
   sm: 544,
@@ -26,19 +28,45 @@ $breakpoints: (
   }
 }
 
-@mixin container($value, $mode: 'up') {
-  @if map.has-key($breakpoints, $value) {
-    $value: get($value) + 'px';
+@mixin container($value, $mode: 'up', $name: '') {
+  $query: '';
+
+  @if meta.type-of($value) == 'list' {
+    @if list.length($value) == 2 {
+      $min: breakpoint(list.nth($value, 1));
+      $max: breakpoint(list.nth($value, 2));
+      $query: '(width >= #{$min}) and (width < #{$max})';
+    }
   }
 
-  @if $mode == 'down' {
-    @container (width < #{$value}) {
-      @content;
+  @if meta.type-of($value) == 'string' {
+    @if list.index(('up', 'down'), $mode) {
+      @if $mode == 'up' {
+        $query: '(width >= #{breakpoint($value)})';
+      } @else if $mode == 'down' {
+        $query: '(width < #{breakpoint($value)})';
+      }
     }
-  } @else {
-    @container (width >= #{$value}) {
-      @content;
+  }
+
+  @if meta.type-of($value) == 'number' {
+    @if list.index(('up', 'down'), $mode) {
+      @if $mode == 'up' {
+        $query: '(width >= #{$value})';
+      } @else if $mode == 'down' {
+        $query: '(width < #{$value})';
+      }
     }
+  }
+
+  @if $query == '' {
+    @error 'Invalid container query.';
+  }
+
+  $name: if($name, '#{$name} ', '');
+
+  @container #{$name}(#{$query}) {
+    @content;
   }
 }
 
