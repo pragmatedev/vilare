@@ -73,14 +73,6 @@ class Validation
         );
 
         $factory->extend(
-            'nonce',
-            function (string $attribute, mixed $value) {
-                return ! empty(wp_verify_nonce($value, 'contact'));
-            },
-            __('The :attribute is invalid.', 'vilare')
-        );
-
-        $factory->extend(
             'link',
             function (string $attribute, mixed $value) {
                 if (empty($value['title'])) {
