@@ -46,7 +46,7 @@ class Assets
             )
         );
 
-        wp_add_inline_style('style', 'body { [x-cloak] { display: none } }');
+        wp_add_inline_style('style', 'body { [x-cloak] { display: none !important } }');
     }
 
     /**
