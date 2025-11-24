@@ -13,6 +13,10 @@
     outline: var(--color-black) dashed 0.1rem;
   }
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
   &.-size-sm {
     @extend %text-xs;
 
@@ -53,7 +57,7 @@
     color: var(--color-white);
     background-color: var(--color-black);
 
-    &:hover {
+    &:hover:not(:disabled) {
       color: var(--color-black);
       background-color: transparent;
     }
@@ -64,7 +68,7 @@
     color: var(--color-black);
     background-color: transparent;
 
-    &:hover {
+    &:hover:not(:disabled) {
       color: var(--color-white);
       background-color: var(--color-black);
     }
