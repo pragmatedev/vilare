@@ -23,6 +23,11 @@ class Blocks
         }
     }
 
+    public function has(string $key): bool
+    {
+        return ! empty($this->blocks[$key]);
+    }
+
     public function get(string $key): ?Block
     {
         return ! empty($this->blocks[$key]) ? $this->blocks[$key] : null;

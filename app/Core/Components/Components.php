@@ -23,6 +23,11 @@ class Components
         }
     }
 
+    public function has(string $key): bool
+    {
+        return ! empty($this->components[$key]);
+    }
+
     public function get(string $key): ?Component
     {
         return ! empty($this->components[$key]) ? $this->components[$key] : null;

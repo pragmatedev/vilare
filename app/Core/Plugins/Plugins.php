@@ -23,6 +23,11 @@ class Plugins
         }
     }
 
+    public function has(string $key): bool
+    {
+        return ! empty($this->plugins[$key]);
+    }
+
     public function get(string $key): ?Plugin
     {
         return ! empty($this->plugins[$key]) ? $this->plugins[$key] : null;
