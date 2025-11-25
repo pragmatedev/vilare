@@ -73,6 +73,16 @@ class Validation
         );
 
         $factory->extend(
+            'safe_url',
+            function (string $attribute, mixed $value) {
+                return ! empty($value)
+                    ? ! empty(wp_http_validate_url($value)) && ! empty(wp_validate_redirect($value))
+                    : true;
+            },
+            __('The :attribute is not a safe URL.', 'vilare')
+        );
+
+        $factory->extend(
             'link',
             function (string $attribute, mixed $value) {
                 if (empty($value['title'])) {
