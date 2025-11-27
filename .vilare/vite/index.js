@@ -7,7 +7,7 @@ class Plugin {
   async components() {
     const assets = [];
 
-    for (const type of ['components', 'blocks', 'templates']) {
+    for (const type of ['components', 'blocks', 'templates', 'plugins']) {
       for (const item of fs.readdirSync(`resources/${type}`)) {
         if (fs.existsSync(`resources/${type}/${item}/script.js`)) {
           assets.push(`resources/${type}/${item}/script.js`);
