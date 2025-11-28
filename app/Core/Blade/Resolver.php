@@ -51,6 +51,15 @@ class Resolver
             return vilare()->config()->get('resources.path') . '/index.php';
         }
 
+        if (is_singular()) {
+            $type = get_post_type();
+
+            if (vilare()->templates()->has($type) && vilare()->templates()->get($type)->isPrimary()) {
+                vilare()->templates()->get($type)->render();
+                return vilare()->config()->get('resources.path') . '/index.php';
+            }
+        }
+
         if (vilare()->config()->isTheme()) {
             vilare()->templating()->render($template);
             return vilare()->config()->get('resources.path') . '/index.php';
