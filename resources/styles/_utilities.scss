@@ -119,3 +119,84 @@
     display: none;
   }
 }
+
+.prose {
+  @include prose('h1') {
+    @extend %text-h1;
+
+    margin-bottom: 1rem;
+  }
+
+  @include prose('h2') {
+    @extend %text-h2;
+
+    margin-bottom: 1rem;
+  }
+
+  @include prose('h3') {
+    @extend %text-h3;
+
+    margin-bottom: 1rem;
+  }
+
+  @include prose('h4') {
+    @extend %text-h4;
+
+    margin-bottom: 1rem;
+  }
+
+  @include prose('h5') {
+    @extend %text-h5;
+
+    margin-bottom: 1rem;
+  }
+
+  @include prose('h6') {
+    @extend %text-h6;
+
+    margin-bottom: 1rem;
+  }
+
+  @include prose('p') {
+    @extend %text-md;
+
+    margin-bottom: 2.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include prose('ul, ol') {
+    margin: 2.5rem 0;
+    padding: 0 0 0 2.5rem;
+
+    @include up(md) {
+      padding: 0 0 0 3rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include prose('li') {
+    @extend %text-md;
+
+    margin-bottom: 2.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include prose('a') {
+    font-weight: 600;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -70,6 +70,12 @@ $breakpoints: (
   }
 }
 
+@mixin prose($tag) {
+  :where(#{$tag}):not(:where([class^='block-'], [class^='block-'] *, [class^='component-'], [class^='component-'] *)) {
+    @content;
+  }
+}
+
 @function breakpoint($breakpoint) {
   @return #{get($breakpoint) + 'px'};
 }
