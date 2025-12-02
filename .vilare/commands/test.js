@@ -82,7 +82,7 @@ export class Controller {
   }
 
   async psi(slug, isMobile = true) {
-    const url = `${await config('DOMAIN_LOCAL')}/${slug}/`.replace(/\/{2,}/g, '/').replace(/\/+$/, '/');
+    const url = isUrl(slug) ? slug : `${await config('DOMAIN_LOCAL')}/${slug}/`.replace(/\/{2,}/g, '/').replace(/\/+$/, '/');
 
     if (!isUrl(url)) {
       throw new Error(`Invalid URL: ${test}`);
