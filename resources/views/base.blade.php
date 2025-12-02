@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html
-    {!! language_attributes() !!}
-    x-data="vilare"
->
+<html {!! language_attributes() !!}>
     <head>
         <meta charset="utf-8" />
         <meta
@@ -16,7 +13,7 @@
         {!! wp_head() !!}
     </head>
 
-    <body {!! body_class() !!}>
+    <body {!! body_class() !!}x-data="vilare">
         {!! do_action('wp_body_open') !!}
         {!! do_action('get_header') !!}
 
