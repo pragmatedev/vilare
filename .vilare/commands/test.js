@@ -55,7 +55,7 @@ export class Controller {
       {
         type: 'list',
         name: 'devices',
-        message: 'Path: ',
+        message: 'Devices: ',
         choices: [
           { name: 'Mobile', value: 'mobile' },
           { name: 'Desktop', value: 'desktop' },

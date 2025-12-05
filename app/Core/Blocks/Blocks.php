@@ -9,7 +9,7 @@ class Blocks
     private array $blocks = [];
 
     /**
-     * @action after_setup_theme
+     * @action after_setup_theme 1
      */
     public function init(): void
     {

@@ -2,10 +2,13 @@
 
 namespace Vilare\Core;
 
+use WP_Post;
 use DateTimeImmutable;
 
 abstract class Entry
 {
+    private WP_Post $entity;
+
     private int $id;
 
     private string $slug;
@@ -20,12 +23,41 @@ abstract class Entry
 
     private DateTimeImmutable $date;
 
+    public function __construct(int|WP_Post $post)
+    {
+        if (is_numeric($post)) {
+            $post = get_post($post);
+        }
+
+        if (empty($post)) {
+            throw new \Exception('This entry could not be resolved.');
+        }
+
+        $this->setEntity($post);
+        $this->setId($post->ID);
+    }
+
+    public function getEntity(): WP_Post
+    {
+        return $this->entity;
+    }
+
+    private function setEntity(WP_Post $entity): void
+    {
+        $this->entity = $entity;
+    }
+
+    public function hasEntity(): bool
+    {
+        return true;
+    }
+
     public function getId(): int
     {
         return $this->id;
     }
 
-    protected function setId(int $id): void
+    private function setId(int $id): void
     {
         $this->id = $id;
     }
