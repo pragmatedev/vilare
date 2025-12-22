@@ -20,6 +20,7 @@ body {
   @extend %font-primary;
   @extend %text-md;
 
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
 

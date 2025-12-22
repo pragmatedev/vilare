@@ -31,7 +31,7 @@ export class Controller {
         type: 'list',
         name: 'action',
         message: 'Action:',
-        choices: ['export', 'import', 'optimize'],
+        choices: ['export', 'import', 'anonimize', 'optimize'],
       },
       {
         type: 'list',
@@ -49,6 +49,10 @@ export class Controller {
 
       case 'import':
         this.import(data.environment);
+        break;
+
+      case 'anonimize':
+        this.anonimize();
         break;
 
       case 'optimize':
@@ -114,8 +118,6 @@ export class Controller {
 
       case 'production':
         shell.exec(`wp search-replace ${await config('DOMAIN_PROD')} ${await config('DOMAIN_LOCAL')} --all-tables --report=0`);
-        shell.exec('wp option set blog_public 0');
-        shell.exec('wp user update $(wp user list --field=ID) --user_pass=test1234 --skip-email');
         break;
 
       default:
@@ -132,6 +134,11 @@ export class Controller {
     shell.exec('wp db query "DELETE FROM wp_comments WHERE comment_type = \'pingback\';"');
     shell.exec('wp db query "DELETE FROM wp_comments WHERE comment_type = \'trackback\';"');
     shell.exec('wp db optimize');
+  }
+
+  async anonimize() {
+    shell.exec('wp option set blog_public 0');
+    shell.exec('wp user update $(wp user list --field=ID) --user_pass=test1234 --skip-email');
   }
 }
 
@@ -164,6 +171,17 @@ export const database = () => {
     .action(async(options) => {
       try {
         await controller.import(options.env);
+      } catch (error) {
+        program.error(error);
+      }
+    });
+
+  program
+    .command('anonimize')
+    .description('anonimize database')
+    .action(async() => {
+      try {
+        await controller.anonimize();
       } catch (error) {
         program.error(error);
       }

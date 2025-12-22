@@ -4,7 +4,7 @@ Here are the steps that should be performed when initializing a new WordPress pr
 
 1.  Clone the starter repository: `git clone git@github.com:pragmatedev/vilare.git vilare.com`
 2.  Prepare the local environment:
-    1.  Create local server with PHP 8.3 and MySQL 8.4.
+    1.  Create local server with PHP 8.4 and MySQL 8.4.
     2.  Create a new database for the project: `vilare.com`
     3.  Assign a new domain to the project with SSL: `https://vilare.test`
 3.  In the terminal, go to the project root and run `./init.sh`.
@@ -17,7 +17,7 @@ Here are the steps that should be performed when initializing an ongoing WordPre
 
 1.  Clone the project repository: `git clone git@github.com:pragmatedev/vilare.com.git`
 2.  Prepare the local environment:
-    1.  Create local server with PHP 8.3 and MySQL 8.4.
+    1.  Create local server with PHP 8.4 and MySQL 8.4.
     2.  Create a new database for the project: `vilare.com`
     3.  Assign a new domain to the project with SSL: `https://vilare.test`
 3.  In the terminal, go to the project root and run `./init.sh`.
@@ -43,7 +43,6 @@ The project uses `vilare` CLI tool to enhance development operations.
 - `yarn vilare component` - Manages components operations.
 - `yarn vilare test` - Manages testing operations.
 - `yarn vilare release` - Creates production package.
-- `yarn vilare release deploy` - Deploys production package to staging server.
 
 🎥 https://youtu.be/1CXuoyRYb98
 
@@ -67,7 +66,7 @@ The project uses `vilare` CLI tool to enhance development operations.
 ### Development
 
 - Single components should be developed on the [/playground/](https://vilare.com/playground/) template.
-- Before approaching Pull Requests, Lighthouse tests should be performed using the `yarn vilare test psi` command, which checks the `/playground/` page with the newly created component and highlights any issues that must be resolved. **Any problems directly related to the component must be addressed before proceeding to the next steps.**
+- Before approaching Pull Requests, Lighthouse tests should be performed using the `yarn vilare test psi` command, which checks the `/playground/` page with component and highlights any issues. **Any problems directly related to the component must be addressed before proceeding to the next steps.**
 - After approving Pull Requests, the staging server should be updated, and the new block should be added to the [/demo/](https://vilare.com/demo/) template that lists all the custom blocks, allowing the team to access them in one place.
 
 ### Code Review
@@ -118,7 +117,7 @@ Templates are the largest components. Those defined in the theme are automatical
     5.  [ACF Fields](https://github.com/pragmatedev/vilare/blob/master/resources/fields/group_67a362c847851.json): Block fields saved with [Local JSON](https://www.advancedcustomfields.com/resources/local-json/) implementing [block schema](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L13-L17) for Gutenberg.
 2.  Block Creation
     1.  Use the `yarn vilare component create --type=block --id=newsletter` command in the theme's root. The command will create a new block and automatically load it into the system. You might need to restart your development server.
-    2.  Define the [block schema](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L13-L17) and fill it with the [default values](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L18-L22) when needed. Block schema uses the [Laravel Validation](https://laravel.com/docs/10.x/validation#available-validation-rules) component, but if you're not familiar with this yet, please at least define the simplest typing schema to check if the passed is a [string](https://laravel.com/docs/12.x/validation#rule-string), [array](https://laravel.com/docs/12.x/validation#rule-array), [boolean](https://laravel.com/docs/12.x/validation#rule-boolean), or [required](https://laravel.com/docs/12.x/validation#rule-required).
+    2.  Define the [block schema](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L13-L17) and fill it with the [default values](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L18-L22) when needed. Block schema uses the [Laravel Validation](https://laravel.com/docs/12.x/validation#available-validation-rules) component, but if you're not familiar with this yet, please at least define the simplest typing schema to check if the passed is a [string](https://laravel.com/docs/12.x/validation#rule-string), [array](https://laravel.com/docs/12.x/validation#rule-array), [boolean](https://laravel.com/docs/12.x/validation#rule-boolean), or [required](https://laravel.com/docs/12.x/validation#rule-required).
     3.  Go to the ACF Field Groups, clone the `Block: Base` group, and adjust to the newly created block while keeping the same naming conventions. The field naming and validation rules should reflect the ones defined in the schema.
 3.  Block Rendering
     1.  Use the `{!! block('newsletter')->render(['title' => 'custom title']) !!}` function in Blade templates. To fill the block with values, pass the data array to the `render` function based on the [defined schema](https://github.com/pragmatedev/vilare/blob/master/.vilare/templates/blocks/base/Base.php#L13-L17).
