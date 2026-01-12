@@ -42,10 +42,10 @@ abstract class Template
         $data = apply_filters("vilare_templates_{$this->getId()}_data", $data);
 
         if ($this->hasSchema()) {
-            $result = vilare()->validation()->validate($data, $this->getSchema());
+            $data = vilare()->validation()->validate($data, $this->getSchema());
 
-            if (is_wp_error($result)) {
-                throw new TemplatingException(esc_attr($result->get_error_message()));
+            if (is_wp_error($data)) {
+                throw new TemplatingException(esc_attr($data->get_error_message()));
             }
         }
 
