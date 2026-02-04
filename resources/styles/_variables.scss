@@ -7,12 +7,6 @@
   --container-lg: #{breakpoint(lg)};
   --container-md: #{breakpoint(md)};
   --container-sm: #{breakpoint(sm)};
-  --radius-full: 10rem;
-  --radius-xxl: 1.5rem;
-  --radius-xl: 1rem;
-  --radius-lg: 0.75rem;
-  --radius-md: 0.5rem;
-  --radius-sm: 0.25rem;
   --color-white: #FFF;
   --color-primary-50: #F6F6F6;
   --color-primary-100: #E7E7E7;
@@ -25,4 +19,10 @@
   --color-primary-800: #454545;
   --color-primary-900: #3D3D3D;
   --color-black: #000;
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-xl: 2rem;
+  --radius-full: 10rem;
 }

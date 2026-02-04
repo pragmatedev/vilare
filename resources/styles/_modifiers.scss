@@ -178,10 +178,6 @@
   border-radius: var(--radius-full);
 }
 
-%radius-xxl {
-  border-radius: var(--radius-xxl);
-}
-
 %radius-xl {
   border-radius: var(--radius-xl);
 }
@@ -196,4 +192,43 @@
 
 %radius-sm {
   border-radius: var(--radius-sm);
+}
+
+%radius-xs {
+  border-radius: var(--radius-xs);
+}
+
+%radius {
+  @extend %radius-sm;
+}
+
+%shadow-xl {
+  box-shadow: rgb(0 0 0 / 10%) 0 20px 25px -5px, rgb(0 0 0 / 4%) 0 10px 10px -5px;
+}
+
+%shadow-lg {
+  box-shadow: rgb(0 0 0 / 10%) 0 10px 15px -3px, rgb(0 0 0 / 5%) 0 4px 6px -2px;
+}
+
+%shadow-md {
+  box-shadow: rgb(0 0 0 / 10%) 0 4px 6px -1px, rgb(0 0 0 / 6%) 0 2px 4px -1px;
+}
+
+%shadow-sm {
+  box-shadow: rgb(0 0 0 / 10%) 0 1px 3px 0, rgb(0 0 0 / 6%) 0 1px 2px 0;
+}
+
+%shadow-xs {
+  box-shadow: rgb(0 0 0 / 5%) 0 1px 2px 0;
+}
+
+%shadow {
+  @extend %shadow-sm;
+}
+
+%outline {
+  &:focus-visible {
+    outline: 0.1rem dashed var(--color-black);
+    outline-offset: 0.25rem;
+  }
 }
