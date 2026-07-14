@@ -404,8 +404,8 @@ class Controller {
 
     if (remote.includes('github')) {
       fs.mkdirSync(`${this.wordpress.path}/.github/workflows`, { recursive: true });
-      fs.copyFileSync(`${this.templates.path}/pipelines/github-actions.yaml`, `${this.wordpress.path}/.github/workflows/lint.yaml`);
-      shell.exec(`sed -i '' 's/vilare/${this.theme.slug}/g' ${this.wordpress.path}/.github/workflows/lint.yaml`);
+      fs.copyFileSync(`${this.templates.path}/pipelines/github-actions.yml`, `${this.wordpress.path}/.github/workflows/lint.yml`);
+      shell.exec(`sed -i '' 's/vilare/${this.theme.slug}/g' ${this.wordpress.path}/.github/workflows/lint.yml`);
     }
 
     shell.exec('git init');
