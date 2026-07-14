@@ -97,7 +97,7 @@ abstract class Entry
 
     protected function setTitle(string $title): void
     {
-        $this->title = $title;
+        $this->title = html_entity_decode($title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     public function hasTitle(): bool
@@ -183,7 +183,7 @@ abstract class Entry
 
     public function getTerms(string $taxonomy): array
     {
-        return get_the_terms($this->getId(), $taxonomy);
+        return get_the_terms($this->getId(), $taxonomy) ?: [];
     }
 
     public function getMeta(string $key, mixed $fallback = null): mixed

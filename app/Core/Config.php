@@ -24,7 +24,7 @@ class Config
                 'path' => VILARE_DIST_PATH . '/manifest.json',
             ],
             'cache' => [
-                'path' => WP_CONTENT_DIR . '/cache/vilare',
+                'path' => defined('VILARE_CACHE_PATH') ? VILARE_CACHE_PATH : WP_CONTENT_DIR . '/cache/vilare',
             ],
             'dist' => [
                 'path' => VILARE_DIST_PATH,

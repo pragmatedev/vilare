@@ -17,6 +17,8 @@ class Assets
             'scripts/alpine.js',
             [
                 'handle' => 'alpine',
+                'strategy' => 'defer',
+                'footer' => true,
             ]
         );
 
@@ -117,7 +119,7 @@ class Assets
             }
 
             printf(
-                '<link rel="preload" href="%s" as="%s" type="%s" crossorigin="true" />',
+                '<link rel="preload" href="%s" as="%s" type="%s" crossorigin />',
                 esc_attr($item['href']),
                 esc_attr($item['as']),
                 esc_attr($item['type']),

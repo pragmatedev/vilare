@@ -20,13 +20,24 @@ class Templating
         $this->provider->render($template, $data);
     }
 
-    public function generate(string $template, array $data = []): string
+    public function generate(string $template, array $data = [], bool $minify = false): string
     {
-        return $this->provider->generate($template, $data);
+        $content = $this->provider->generate($template, $data);
+
+        return ! empty($minify) ? $this->minify($content) : $content;
     }
 
     public function view(string $template, array $data = [])
     {
         return $this->provider->view($template, $data);
+    }
+
+    public function minify(string $html): string
+    {
+        $html = preg_replace('/>[\s]+</', '><', $html);
+        $html = str_replace("\n", '', $html);
+        $html = preg_replace('/\s+(?=[\w:-]+\s*=)/', ' ', $html);
+
+        return preg_replace('/(["\'])\s+(\/?>)/', '$1$2', $html);
     }
 }

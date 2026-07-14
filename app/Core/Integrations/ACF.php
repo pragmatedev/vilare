@@ -53,7 +53,7 @@ class ACF
      */
     public function save(array $paths, array $post): array
     {
-        if (preg_match('/\[Vilare\]/', $post['title'])) {
+        if (! empty($post['title']) && preg_match('/\[Vilare\]/', $post['title'])) {
             return [VILARE_PATH . '/resources/fields'];
         }
 

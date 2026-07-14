@@ -28,10 +28,10 @@ abstract class Block
         echo $this->generate($data); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     }
 
-    final public function generate(array $data = []): string
+    final public function generate(array $data = [], bool $minify = false): string
     {
         try {
-            return vilare()->templating()->generate("blocks::{$this->getId()}.template", $this->parse($data));
+            return vilare()->templating()->generate("blocks::{$this->getId()}.template", $this->parse($data), $minify);
         } catch (TemplatingException $th) {
             return "<div>⚠️ Block {$this->getTitle()} Exception: {$th->getMessage()}</div>";
         } catch (\Throwable $th) {
@@ -45,10 +45,10 @@ abstract class Block
         $data = apply_filters("vilare_blocks_{$this->getId()}_data", $data);
 
         if ($this->hasSchema()) {
-            $data = vilare()->validation()->validate($data, $this->getSchema());
+            $result = vilare()->validation()->validate($data, $this->getSchema());
 
-            if (is_wp_error($data)) {
-                throw new TemplatingException(esc_attr($data->get_error_message()));
+            if (is_wp_error($result)) {
+                throw new TemplatingException(esc_attr($result->get_error_message()));
             }
         }
 
