@@ -28,13 +28,13 @@ export class Controller {
   async process() {
     const data = await inquirer.prompt([
       {
-        type: 'list',
+        type: 'select',
         name: 'action',
         message: 'Action:',
         choices: ['export', 'import', 'anonimize', 'optimize'],
       },
       {
-        type: 'list',
+        type: 'select',
         name: 'environment',
         message: 'Environment:',
         choices: ['local', 'staging', 'production'],

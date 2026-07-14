@@ -35,7 +35,7 @@ export class Controller {
 
     const data = await inquirer.prompt([
       {
-        type: 'list',
+        type: 'select',
         name: 'task',
         message: 'What do you want to do?',
         choices: [
@@ -53,7 +53,7 @@ export class Controller {
         validate: (value) => value ? true : 'value is required',
       },
       {
-        type: 'list',
+        type: 'select',
         name: 'devices',
         message: 'Devices: ',
         choices: [

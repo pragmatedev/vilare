@@ -27,7 +27,7 @@ class Controller {
   async process(options) {
     const data = await inquirer.prompt([
       {
-        type: 'list',
+        type: 'select',
         name: 'task',
         message: 'What do you want to do?',
         choices: [

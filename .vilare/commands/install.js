@@ -203,7 +203,7 @@ class Controller {
     console.log();
 
     for (const key in inputs) {
-      shell.exec(`sed -i '' "s|define( '${key}', '' );|define( '${key}', '${inputs[key]}' );|g" ${this.wordpress.path}/wp-config-db.php`);
+      shell.exec(`sed -i '' "s|define( '${key}', '' );|define( '${key}', '${inputs[key]}' );|g" ${path.resolve(this.wordpress.path, 'wp-config-db.php')}`);
     }
   }
 
@@ -216,7 +216,7 @@ class Controller {
     fs.copyFileSync(`${this.templates.path}/configs/htaccess`, `${this.wordpress.path}/.htaccess`);
     fs.copyFileSync(`${this.templates.path}/configs/htpasswd`, `${this.wordpress.path}/.htpasswd`);
 
-    shell.exec(`sed -i '' "s|example.test|${domains.local}|g; s|example.com|${domains.prod}|g" ${this.wordpress.path}/.htaccess`);
+    shell.exec(`sed -i '' "s|example.test|${domains.local}|g; s|example.com|${domains.prod}|g" ${path.resolve(this.wordpress.path, '.htaccess')}`);
   }
 
   async core() {
@@ -444,7 +444,7 @@ class Controller {
     }
 
     const { environment } = await inquirer.prompt({
-      type: 'list',
+      type: 'select',
       name: 'environment',
       message: 'Choose database source:',
       choices: ['local', 'staging', 'production'],

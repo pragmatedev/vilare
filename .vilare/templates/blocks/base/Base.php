@@ -12,7 +12,7 @@ class Base extends Block
         $this->setTitle('Base');
         $this->setSchema(
             [
-                'title' => 'required|string|max:60',
+                'title' => 'required|string',
             ]
         );
         $this->setData(
