@@ -1,5 +1,6 @@
 %container-full {
   width: var(--container-full);
+  max-width: var(--container-full);
   margin-left: calc((var(--container-full) - 100%) / -2);
 }
 
@@ -64,7 +65,31 @@
 }
 
 %container {
-  @extend %container-xl;
+  @at-root {
+    body.vilare-content-width-sm & {
+      @extend %container-sm;
+    }
+
+    body.vilare-content-width-md & {
+      @extend %container-md;
+    }
+
+    body.vilare-content-width-lg & {
+      @extend %container-lg;
+    }
+
+    body.vilare-content-width-xl & {
+      @extend %container-xl;
+    }
+
+    body.vilare-content-width-xxl & {
+      @extend %container-xxl;
+    }
+
+    body.vilare-content-width-full & {
+      @extend %container-full;
+    }
+  }
 }
 
 %font-primary {

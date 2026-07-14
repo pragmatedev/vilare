@@ -1,12 +1,6 @@
 /**
  * Send a POST request to the AJAX endpoint.
  *
- * @param {FormData} payload
- * @returns {Promise<{success: boolean, data: object}>}
- */
-/**
- * Send a POST request to the AJAX endpoint.
- *
  * @param {object} payload
  * @param {FormData} body
  * @returns {Promise<{success: boolean, data: object}>}

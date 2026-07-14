@@ -13,7 +13,10 @@
     {!! wp_head() !!}
 </head>
 
-<body {!! body_class() !!}x-data="vilare">
+<body
+    {!! body_class() !!}
+    x-data="vilare"
+>
     {!! do_action('wp_body_open') !!} {!! do_action('get_header') !!}
 
     @section('header')
