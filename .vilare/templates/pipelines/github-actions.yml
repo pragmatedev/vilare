@@ -7,12 +7,12 @@ jobs:
     container:
       image: pragmatedev/vitewp-docker
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache@v4
+      - uses: actions/checkout@v7
+      - uses: actions/cache@v6
         with:
           path: wp-content/themes/vilare/vendor
           key: composer-${{ hashFiles('**/composer.lock') }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: wp-content/themes/vilare/node_modules
           key: yarn-${{ hashFiles('**/yarn.lock') }}
