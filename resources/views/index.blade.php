@@ -6,9 +6,7 @@
             @while (have_posts())
                 {{ the_post() }}
                 <div>
-                    <a href="{{ the_permalink() }}">
-                        {{ the_title() }}
-                    </a>
+                    <a href="{{ the_permalink() }}">{{ the_title() }}</a>
                 </div>
             @endwhile
         @endif

@@ -21,9 +21,7 @@
     >
         @foreach (['text-h1', 'text-h2', 'text-h3', 'text-h4', 'text-h5', 'text-h6'] as $item)
             <div class="block-guide__row">
-                <div class="-{{ $item }} -font-primary">
-                    {{ $title }}
-                </div>
+                <div class="-{{ $item }} -font-primary">{{ $title }}</div>
 
                 <x-button
                     label=".{{ $item }}"
@@ -41,9 +39,7 @@
     >
         @foreach (['font-primary', 'font-secondary'] as $item)
             <div class="block-guide__row">
-                <div class="-{{ $item }}">
-                    {{ $title }}
-                </div>
+                <div class="-{{ $item }}">{{ $title }}</div>
 
                 <x-button
                     label=".{{ $item }}"
