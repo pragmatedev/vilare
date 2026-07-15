@@ -1,0 +1,52 @@
+name: Deploy
+
+jobs:
+  qa:
+    name: QA
+    uses: ./.github/workflows/lint.yml
+
+  deploy:
+    name: Deploy
+    needs: qa
+    runs-on: ubuntu-latest
+    container:
+      image: pragmatedev/vitewp-docker
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/cache@v6
+        with:
+          path: wp-content/themes/vilare/vendor
+          key: composer-${{ hashFiles('**/composer.lock') }}
+      - uses: actions/cache@v6
+        with:
+          path: wp-content/themes/vilare/node_modules
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: Prepare Files
+        run: composer install && yarn install
+      - name: Deploy Staging
+        if: github.ref == 'refs/heads/develop'
+        run: yarn vilare deploy --env=staging --mode=full
+      - name: Deploy Production
+        if: github.ref == 'refs/heads/master'
+        run: yarn vilare deploy --env=production --mode=full
+    defaults:
+      run:
+        working-directory: wp-content/themes/vilare
+    env:
+      STAGING_HOST: ${{ secrets.STAGING_HOST }}
+      STAGING_PORT: ${{ secrets.STAGING_PORT }}
+      STAGING_USERNAME: ${{ secrets.STAGING_USERNAME }}
+      STAGING_PASSWORD: ${{ secrets.STAGING_PASSWORD }}
+      STAGING_ROOT: ${{ secrets.STAGING_ROOT }}
+      PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+      PRODUCTION_PORT: ${{ secrets.PRODUCTION_PORT }}
+      PRODUCTION_USERNAME: ${{ secrets.PRODUCTION_USERNAME }}
+      PRODUCTION_PASSWORD: ${{ secrets.PRODUCTION_PASSWORD }}
+      PRODUCTION_ROOT: ${{ secrets.PRODUCTION_ROOT }}
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - master

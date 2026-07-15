@@ -34,10 +34,6 @@ class Controller {
 
     const params = await this.params(env, mode);
 
-    if (!await this.confirm(params)) {
-      return console.log('❌ Deployment Cancelled\r\n');
-    }
-
     console.clear();
 
     const connection = {
@@ -140,25 +136,6 @@ class Controller {
       env: env || inputs.env || 'staging',
       mode: mode || inputs.mode || 'theme',
     };
-  }
-
-  async confirm(params) {
-    if (params.env === 'production') {
-      const answers = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'confirm',
-          message: (answers) => `Are you sure you want to deploy to ${chalk.yellow(params.env)}?`,
-          default: (answers) => false,
-        },
-      ]);
-
-      if (answers.confirm === false) {
-        return false;
-      }
-    }
-
-    return true;
   }
 
   /**
