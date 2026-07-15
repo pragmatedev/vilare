@@ -57,9 +57,7 @@ abstract class Core
         $this->templating = App::init(new Templating());
         $this->validation = App::init(new Validation());
 
-        if (! empty(WP_DEBUG)) {
-            \Vilare\App::init(new Debugger());
-        }
+        \Vilare\App::init(new Debugger());
     }
 
     protected function __clone()

@@ -8,6 +8,8 @@ class Debugger
 {
     public function __construct()
     {
-        Ignition::make()->register();
+        if (! empty(WP_DEBUG) && ! empty(WP_DEBUG_DISPLAY) && wp_get_environment_type() === 'development') {
+            Ignition::make()->register();
+        }
     }
 }
