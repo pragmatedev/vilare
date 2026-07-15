@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+import inquirer from 'inquirer';
 import path from 'path';
 import shell from 'shelljs';
 import { Command } from 'commander';
@@ -26,7 +28,143 @@ class Controller {
     };
   }
 
-  async deploy(environment = 'staging', full = false) {
+  async deploy(env, mode) {
+    const ssh = new SSHClient();
+    const release = new Release();
+
+    const params = await this.params(env, mode);
+
+    if (!await this.confirm(params)) {
+      return console.log('❌ Deployment Cancelled\r\n');
+    }
+
+    console.clear();
+
+    const connection = {
+      host: params.env === 'production' ? await config('PRODUCTION_HOST') : await config('STAGING_HOST'),
+      port: params.env === 'production' ? await config('PRODUCTION_PORT') : await config('STAGING_PORT'),
+      username: params.env === 'production' ? await config('PRODUCTION_USERNAME') : await config('STAGING_USERNAME'),
+      password: params.env === 'production' ? await config('PRODUCTION_PASSWORD') : await config('STAGING_PASSWORD'),
+      root: params.env === 'production' ? await config('PRODUCTION_ROOT') : await config('STAGING_ROOT'),
+    };
+
+    await release.release();
+
+    console.log('🚀 Deploying Release Package \r\n');
+
+    try {
+      console.log(`${chalk.yellow('[1/5]')} Preparing release package.`);
+
+      shell.exec(`mkdir -p "${this.output.path}/wp-content/themes/${this.theme.slug}"`, { silent: true });
+      shell.exec(`mv "${this.output.path}/app" "${this.output.path}/wp-content/themes/${this.theme.slug}"`);
+      shell.exec(`mv "${this.output.path}/dist" "${this.output.path}/wp-content/themes/${this.theme.slug}"`);
+      shell.exec(`mv "${this.output.path}/inc" "${this.output.path}/wp-content/themes/${this.theme.slug}"`);
+      shell.exec(`mv "${this.output.path}/resources" "${this.output.path}/wp-content/themes/${this.theme.slug}"`);
+      shell.exec(`mv "${this.output.path}/vendor" "${this.output.path}/wp-content/themes/${this.theme.slug}"`);
+
+      if (params.mode === 'full') {
+        shell.exec(`cp -R "${this.wordpress.path}/wp-admin" "${this.output.path}"`);
+        shell.exec(`cp -R "${this.wordpress.path}/wp-includes" "${this.output.path}"`);
+        shell.exec(`cp -R "${this.wordpress.path}/wp-content/plugins" "${this.output.path}/wp-content/plugins"`);
+        shell.exec(`cp -R "${this.wordpress.path}/wp-content/themes/twentytwentyfive" "${this.output.path}/wp-content/themes"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-content/themes/index.php" "${this.output.path}/wp-content/themes"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-content/index.php" "${this.output.path}/wp-content"`);
+        shell.exec(`cp "${this.wordpress.path}/index.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-activate.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-blog-header.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-comments-post.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-config-sample.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-cron.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-links-opml.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-load.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-login.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-mail.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-settings.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-signup.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/wp-trackback.php" "${this.output.path}"`);
+        shell.exec(`cp "${this.wordpress.path}/xmlrpc.php" "${this.output.path}"`);
+      }
+
+      shell.exec(`find "${this.output.path}" -type f -name ".gitkeep" -delete`);
+      shell.exec(`find "${this.output.path}" -type f -name ".DS_Store" -delete`);
+      shell.exec(`cd "${this.output.path}" && zip -r "release.zip" .`, { silent: true });
+      shell.exec(`find "${this.output.path}" -mindepth 1 -maxdepth 1 ! -name 'release.zip' -exec rm -rf {} +`);
+
+      console.log(`${chalk.yellow('[2/5]')} Connecting to the server.`);
+
+      await ssh.connect({
+        host: connection.host,
+        port: connection.port,
+        username: connection.username,
+        password: connection.password,
+        tryKeyboard: true,
+      });
+
+      console.log(`${chalk.yellow('[3/5]')} Transfering release package.`);
+      await ssh.putFile(`${this.output.path}/release.zip`, `${connection.root}/release.zip`);
+
+      console.log(`${chalk.yellow('[4/5]')} Unpacking release package.`);
+      await ssh.execCommand(`unzip -o -u ${connection.root}/release.zip -d ${connection.root}`);
+      await ssh.execCommand(`rm ${connection.root}/release.zip`);
+
+      console.log(`${chalk.yellow('[5/5]')} Clearing cache directory.`);
+      await ssh.execCommand(`rm -rf ${connection.root}/wp-content/cache`);
+
+      console.log();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      ssh.dispose();
+    }
+  }
+
+  async params(env, mode) {
+    const inputs = await inquirer.prompt([
+      {
+        type: 'select',
+        name: 'env',
+        message: 'Environment:',
+        choices: ['staging', 'production'],
+        when: typeof env === 'undefined' || !['staging', 'production'].includes(env),
+      },
+      {
+        type: 'select',
+        name: 'mode',
+        message: 'Mode:',
+        choices: ['theme', 'full'],
+        when: typeof mode === 'undefined' || !['theme', 'full'].includes(mode),
+      },
+    ]);
+
+    return {
+      env: env || inputs.env || 'staging',
+      mode: mode || inputs.mode || 'theme',
+    };
+  }
+
+  async confirm(params) {
+    if (params.env === 'production') {
+      const answers = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'confirm',
+          message: (answers) => `Are you sure you want to deploy to ${chalk.yellow(params.env)}?`,
+          default: (answers) => false,
+        },
+      ]);
+
+      if (answers.confirm === false) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * [W.I.P] Deploy project to iq.pl servers
+   */
+  async deployIQ(env, mode) {
     const release = new Release();
 
     await release.release();
@@ -34,10 +172,11 @@ class Controller {
     console.log('✈️ Deploying WordPress Project \r\n');
 
     const connection = {
-      host: environment === 'staging' ? await config('STAGING_HOST') : await config('PRODUCTION_HOST'),
-      username: environment === 'staging' ? await config('STAGING_USERNAME') : await config('PRODUCTION_USERNAME'),
-      password: environment === 'staging' ? await config('STAGING_PASSWORD') : await config('PRODUCTION_PASSWORD'),
-      root: environment === 'staging' ? await config('STAGING_ROOT') : await config('PRODUCTION_ROOT'),
+      host: env === 'production' ? await config('PRODUCTION_HOST') : await config('STAGING_HOST'),
+      port: env === 'production' ? await config('PRODUCTION_PORT') : await config('STAGING_PORT'),
+      username: env === 'production' ? await config('PRODUCTION_USERNAME') : await config('STAGING_USERNAME'),
+      password: env === 'production' ? await config('PRODUCTION_PASSWORD') : await config('STAGING_PASSWORD'),
+      root: env === 'production' ? await config('PRODUCTION_ROOT') : await config('STAGING_ROOT'),
     };
 
     const ftp = new FTPClient();
@@ -51,7 +190,7 @@ class Controller {
       shell.exec(`mv "${this.output.path}/resources" "${this.output.path}/${connection.root}/wp-content/themes/${this.theme.slug}"`);
       shell.exec(`mv "${this.output.path}/vendor" "${this.output.path}/${connection.root}/wp-content/themes/${this.theme.slug}"`);
 
-      if (full) {
+      if (mode === 'full') {
         shell.exec(`cp -R "${this.wordpress.path}/wp-admin" "${this.output.path}/${connection.root}"`);
         shell.exec(`cp -R "${this.wordpress.path}/wp-includes" "${this.output.path}/${connection.root}"`);
         shell.exec(`cp -R "${this.wordpress.path}/wp-content/plugins" "${this.output.path}/${connection.root}/wp-content/plugins"`);
@@ -83,11 +222,13 @@ class Controller {
         host: connection.host,
         user: connection.username,
         password: connection.password,
+        port: connection.port,
         secure: false,
       });
 
       await ssh.connect({
         host: 'ssh.iq.pl',
+        port: connection.port,
         username: connection.username,
         password: connection.password,
         tryKeyboard: true,
@@ -155,11 +296,11 @@ export const deploy = () => {
 
   program
     .description('deploy release package')
-    .option('-e, --env <env>', 'staging | production', 'staging')
-    .option('-f, --full <full>', 'full deploy', false)
-    .action((options) => {
+    .option('-e, --env <env>', 'staging | production')
+    .option('-m, --mode <mode>', 'theme | full')
+    .action(async(options) => {
       try {
-        controller.deploy(options.env, options.full);
+        await controller.deploy(options.env, options.mode);
       } catch (error) {
         program.error(error);
       }

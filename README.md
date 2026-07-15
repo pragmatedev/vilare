@@ -43,6 +43,7 @@ The project uses `vilare` CLI tool to enhance development operations.
 - `yarn vilare component` - Manages components operations.
 - `yarn vilare test` - Manages testing operations.
 - `yarn vilare release` - Creates production package.
+- `yarn vilare deploy` - Deploys release package.
 
 🎥 https://youtu.be/1CXuoyRYb98
 

@@ -14,13 +14,11 @@ define( 'DOMAIN_STAGING', '' );
 define( 'STAGING_HOST', '' );
 define( 'STAGING_USERNAME', '' );
 define( 'STAGING_PASSWORD', '' );
-define( 'STAGING_PORT', '' );
 define( 'STAGING_ROOT', '' );
 
 define( 'PRODUCTION_HOST', '' );
 define( 'PRODUCTION_USERNAME', '' );
 define( 'PRODUCTION_PASSWORD', '' );
-define( 'PRODUCTION_PORT', '' );
 define( 'PRODUCTION_ROOT', '' );
 
 define( 'ACF_PRO_LICENSE', '' );

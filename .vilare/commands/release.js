@@ -25,32 +25,28 @@ export class Controller {
   }
 
   release(zip = false) {
-    console.log('✈️ Creating Release Package \r\n');
+    console.log('🛠️ Creating Release Package \r\n');
 
-    /**
-     * clean output
-     */
+    console.log(`${chalk.yellow('[1/4]')} Cleaning output directory.`);
+
     if (fs.existsSync(`${this.output.path}`)) {
       fs.rmSync(`${this.output.path}`, { recursive: true });
     }
 
     fs.mkdirSync(`${this.output.path}`);
 
-    /**
-     * copy vendors
-     */
+    console.log(`${chalk.yellow('[2/4]')} Installing dependencies.`);
+
     shell.exec('composer install --no-dev --quiet', { silent: true });
     shell.exec(`cp -R "${this.theme.path}/vendor" "${this.output.path}/vendor"`);
     shell.exec('composer install --quiet', { silent: true });
 
-    /**
-     * build theme
-     */
+    console.log(`${chalk.yellow('[3/4]')} Building theme files.`);
+
     shell.exec('yarn build', { silent: true });
 
-    /**
-     * copy theme files
-     */
+    console.log(`${chalk.yellow('[4/4]')} Preparing theme files.`);
+
     shell.exec(`cp -R "${this.theme.path}/dist" "${this.output.path}/dist"`);
     shell.exec(`cp -R "${this.theme.path}/app" "${this.output.path}/app"`);
     shell.exec(`cp -R "${this.theme.path}/inc" "${this.output.path}/inc"`);
@@ -67,6 +63,7 @@ export class Controller {
     shell.exec(`find "${this.output.path}/resources" -type f -name ".DS_Store" -delete`);
 
     if (zip) {
+      console.log(`${chalk.yellow('[5/4]')} Compressing theme files.`);
       shell.exec(`cd "${this.output.path}" && zip -r "${this.theme.slug}.zip" .`, { silent: true });
       shell.exec(`rm -rf "${this.output.path}/app"`);
       shell.exec(`rm -rf "${this.output.path}/dist"`);
@@ -75,7 +72,6 @@ export class Controller {
       shell.exec(`rm -rf "${this.output.path}/vendor"`);
     }
 
-    console.log(`Release created in ${chalk.green(this.output.path)} directory`);
     console.log();
   }
 }
