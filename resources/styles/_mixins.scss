@@ -63,7 +63,9 @@ $breakpoints: (
     @error 'Invalid container query.';
   }
 
-  $name: if($name, '#{$name} ', '');
+  @if $name {
+    $name: '#{$name} ';
+  }
 
   @container #{$name}(#{$query}) {
     @content;
