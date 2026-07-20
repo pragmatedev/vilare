@@ -144,6 +144,77 @@
     @include(
         'blocks::guide.partials.header',
         [
+            'id' => 'containers',
+            'title' => __('Containers', 'vilare'),
+        ]
+    )
+
+    <div class="block-guide__table -container-full">
+        @foreach (['container-full', 'container-xxl', 'container-xl', 'container-lg', 'container-md', 'container-sm'] as $item)
+            <div
+                class="block-guide__row -{{ $item }}"
+                style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    min-height: 5rem;
+                    padding: 1rem;
+                    background: var(--color-primary-50);
+                "
+            >
+                <x-button
+                    label=".{{ $item }}"
+                    size="md"
+                    style="solid"
+                    x-on:click="copy('@extend %{{ $item }};')"
+                />
+            </div>
+        @endforeach
+    </div>
+
+    @include(
+        'blocks::guide.partials.header',
+        [
+            'id' => 'media',
+            'title' => __('Media', 'vilare'),
+        ]
+    )
+
+    <div
+        class="block-guide__table"
+        style="--cols: 4"
+    >
+        @foreach (apply_filters('vilare_media_sizes', []) as $key => $item)
+            <div class="block-guide__col">
+                <div
+                    style="
+                        background-color: var(--color-grey-5);
+                        width: 100%;
+                        height: 5rem;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: var(--radius-md);
+                    "
+                >
+                    {{ $item['width'] }}x{{ $item['height'] }}px
+                </div>
+
+                <x-button
+                    label="{{ $key }}"
+                    size="md"
+                    style="outline"
+                    x-on:click="copy('{{ $key }}')"
+                />
+            </div>
+        @endforeach
+    </div>
+
+    @include(
+        'blocks::guide.partials.header',
+        [
             'id' => 'buttons',
             'title' => __('Buttons', 'vilare'),
         ]
@@ -237,38 +308,6 @@
                 style="outline"
             />
         </div>
-    </div>
-
-    @include(
-        'blocks::guide.partials.header',
-        [
-            'id' => 'containers',
-            'title' => __('Containers', 'vilare'),
-        ]
-    )
-
-    <div class="block-guide__table -container-full">
-        @foreach (['container-full', 'container-xxl', 'container-xl', 'container-lg', 'container-md', 'container-sm'] as $item)
-            <div
-                class="block-guide__row -{{ $item }}"
-                style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-                    min-height: 5rem;
-                    padding: 1rem;
-                    background: var(--color-primary-50);
-                "
-            >
-                <x-button
-                    label=".{{ $item }}"
-                    size="md"
-                    style="solid"
-                    x-on:click="copy('@extend %{{ $item }};')"
-                />
-            </div>
-        @endforeach
     </div>
 
     @include('blocks::guide.partials.tooltip')
