@@ -86,6 +86,7 @@ class Controller {
 
       shell.exec(`sed -i '' "s|setTitle('${config.name}')|setTitle('${config.title}')|g" ${file.destination}`);
       shell.exec(`sed -i '' "s|'title' => '${config.name}'|'title' => '${config.title}'|g" ${file.destination}`);
+      shell.exec(`sed -i '' 's|"title": "${config.name}"|"title": "${config.title}"|g' ${file.destination}`);
 
       shell.exec(`sed -i '' "s|_${config.id}|_${snakeCase(config.id)}|g" ${file.destination}`);
     }
@@ -128,6 +129,10 @@ class Controller {
           {
             source: `${this.templates.path}/blocks/base/template.blade.php`,
             destination: `${this.theme.path}/resources/blocks/${config.id}/template.blade.php`,
+          },
+          {
+            source: `${this.templates.path}/blocks/base/block.json`,
+            destination: `${this.theme.path}/resources/blocks/${config.id}/block.json`,
           },
           {
             source: `${this.templates.path}/blocks/base/Base.php`,

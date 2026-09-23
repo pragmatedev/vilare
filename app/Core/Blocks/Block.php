@@ -67,28 +67,43 @@ abstract class Block
         return $data;
     }
 
-    final public function enqueue(): void
+    final public function register(): void
     {
-        vilare()->assets()->enqueue(
+        $dependencies = [
+            'script' => ['script'],
+            'style' => ['style'],
+        ];
+
+        if (in_array('swiper', $this->dependencies, true)) {
+            vilare()->assets()->register('scripts/swiper.js', ['handle' => 'swiper']);
+            vilare()->assets()->register('styles/swiper.scss', ['handle' => 'swiper']);
+            $dependencies['script'][] = 'swiper';
+            $dependencies['style'][] = 'swiper';
+        }
+
+        vilare()->assets()->register(
             "blocks/{$this->getId()}/script.js",
             [
                 'handle' => "block-{$this->getId()}-script",
-                'deps' => ['script'],
+                'deps' => $dependencies['script'],
             ]
         );
 
-        vilare()->assets()->enqueue(
+        vilare()->assets()->register(
             "blocks/{$this->getId()}/style.scss",
             [
                 'handle' => "block-{$this->getId()}-style",
-                'deps' => ['style'],
+                'deps' => $dependencies['style'],
             ]
         );
+    }
 
-        if (in_array('swiper', $this->dependencies)) {
-            vilare()->assets()->enqueue('scripts/swiper.js', ['handle' => 'swiper']);
-            vilare()->assets()->enqueue('styles/swiper.scss', ['handle' => 'swiper']);
-        }
+    final public function enqueue(): void
+    {
+        $this->register();
+
+        wp_enqueue_script("block-{$this->getId()}-script");
+        wp_enqueue_style("block-{$this->getId()}-style");
     }
 
     final public function getId(): string
@@ -170,17 +185,6 @@ abstract class Block
     final public function setPrimary(bool $primary = true): void
     {
         $this->primary = $primary;
-    }
-
-    /**
-     * @action wp_enqueue_scripts
-     * @action admin_enqueue_scripts
-     */
-    final public function enqueuePrimary(): void
-    {
-        if ($this->isPrimary()) {
-            $this->enqueue();
-        }
     }
 
     /**

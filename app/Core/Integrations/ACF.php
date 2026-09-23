@@ -9,21 +9,12 @@ class ACF
      */
     public function blocks(): void
     {
-        if (! function_exists('acf_register_block_type')) {
-            return;
-        }
-
         foreach (vilare()->blocks()->all() as $block) {
-            acf_register_block_type(
+            $block->register();
+
+            register_block_type(
+                vilare()->config()->get('blocks.path') . "/{$block->getId()}",
                 [
-                    'name'  => $block->getId(),
-                    'title' => $block->getTitle(),
-                    'keywords' => ['vilare'],
-                    'supports' => [
-                        'anchor' => true,
-                        'jsx' => $block->usesInnerBlocks(),
-                    ],
-                    'mode' => $block->usesInnerBlocks() ? 'preview' : 'edit',
                     // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
                     'render_callback' => function ($config, $content, $preview, $post) use ($block) {
                         $block->render(
@@ -35,13 +26,11 @@ class ACF
                                     'attributes' => [
                                         'id' => ! empty($config['anchor']) ? $config['anchor'] : '',
                                         'class' => ! empty($config['className']) ? $config['className'] : '',
+                                        'background' => ! empty($config['background']) ? $config['background'] : 'none',
                                     ],
                                 ]
                             )
                         );
-                    },
-                    'enqueue_assets' => function () use ($block) {
-                        $block->enqueue();
                     },
                 ]
             );
