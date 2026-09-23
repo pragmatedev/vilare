@@ -5,7 +5,8 @@
   'fonts',
   'utilities';
 
-html:has(.block-editor) {
+html:has(.block-editor),
+html.block-editor-iframe__html {
   font-size: 10px;
 }
 
