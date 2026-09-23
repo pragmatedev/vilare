@@ -100,6 +100,7 @@ class Controller {
       await ssh.putFile(`${this.output.path}/release.zip`, `${connection.root}/release.zip`);
 
       console.log(`${chalk.yellow('[4/5]')} Unpacking release package.`);
+      await ssh.execCommand(`rm -rf ${connection.root}/wp-content/themes/${this.theme.slug}`);
       await ssh.execCommand(`unzip -o -u ${connection.root}/release.zip -d ${connection.root}`);
       await ssh.execCommand(`rm ${connection.root}/release.zip`);
 

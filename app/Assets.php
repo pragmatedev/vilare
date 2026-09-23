@@ -104,11 +104,13 @@ class Assets
                     'href' => vilare()->assets()->resolve('fonts/Montserrat.woff2'),
                     'as' => 'font',
                     'type' => 'font/woff2',
+                    'fetchpriority' => 'high',
                 ],
                 [
                     'href' => vilare()->assets()->resolve('fonts/SourceSans3.woff2'),
                     'as' => 'font',
                     'type' => 'font/woff2',
+                    'fetchpriority' => 'high',
                 ],
             ]
         );
@@ -119,10 +121,11 @@ class Assets
             }
 
             printf(
-                '<link rel="preload" href="%s" as="%s" type="%s" crossorigin />',
+                '<link rel="preload" href="%s" as="%s" type="%s" crossorigin fetchpriority="%s" />',
                 esc_attr($item['href']),
                 esc_attr($item['as']),
                 esc_attr($item['type']),
+                esc_attr($item['fetchpriority']),
             );
         }
     }

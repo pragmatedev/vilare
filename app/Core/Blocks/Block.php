@@ -182,4 +182,21 @@ abstract class Block
             $this->enqueue();
         }
     }
+
+    /**
+     * @filter vilare_assets_preload
+     */
+    final public function preload(array $preloads): array
+    {
+        if ($this->isPrimary()) {
+            $preloads[] = [
+                'href' => vilare()->assets()->resolve("blocks/{$this->getId()}/style.scss"),
+                'as' => 'style',
+                'type' => 'text/css',
+                'fetchpriority' => 'high',
+            ];
+        }
+
+        return $preloads;
+    }
 }
