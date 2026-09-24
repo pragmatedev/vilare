@@ -26,7 +26,6 @@ class ACF
                                     'attributes' => [
                                         'id' => ! empty($config['anchor']) ? $config['anchor'] : '',
                                         'class' => ! empty($config['className']) ? $config['className'] : '',
-                                        'background' => ! empty($config['background']) ? $config['background'] : 'none',
                                     ],
                                 ]
                             )
