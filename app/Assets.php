@@ -33,7 +33,9 @@ class Assets
             is_admin() ? 'scripts/admin.js' : 'scripts/scripts.js',
             [
                 'handle' => 'script',
-                'deps' => ['alpine'],
+                'deps' => is_admin()
+                    ? ['alpine', 'wp-block-editor', 'wp-components', 'wp-hooks', 'wp-i18n']
+                    : ['alpine'],
             ]
         );
 
