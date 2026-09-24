@@ -56,28 +56,43 @@ abstract class Template
         return $data;
     }
 
-    final public function enqueue(): void
+    final public function register(): void
     {
-        vilare()->assets()->enqueue(
+        $dependencies = [
+            'script' => ['script'],
+            'style' => ['style'],
+        ];
+
+        if (in_array('swiper', $this->dependencies, true)) {
+            vilare()->assets()->register('scripts/swiper.js', ['handle' => 'swiper']);
+            vilare()->assets()->register('styles/swiper.scss', ['handle' => 'swiper']);
+            $dependencies['script'][] = 'swiper';
+            $dependencies['style'][] = 'swiper';
+        }
+
+        vilare()->assets()->register(
             "templates/{$this->getId()}/script.js",
             [
                 'handle' => "template-{$this->getId()}-script",
-                'deps' => ['script'],
+                'deps' => $dependencies['script'],
             ]
         );
 
-        vilare()->assets()->enqueue(
+        vilare()->assets()->register(
             "templates/{$this->getId()}/style.scss",
             [
                 'handle' => "template-{$this->getId()}-style",
-                'deps' => ['style'],
+                'deps' => $dependencies['style'],
             ]
         );
+    }
 
-        if (in_array('swiper', $this->dependencies)) {
-            vilare()->assets()->enqueue('scripts/swiper.js', ['handle' => 'swiper']);
-            vilare()->assets()->enqueue('styles/swiper.scss', ['handle' => 'swiper']);
-        }
+    final public function enqueue(): void
+    {
+        $this->register();
+
+        wp_enqueue_script("template-{$this->getId()}-script");
+        wp_enqueue_style("template-{$this->getId()}-style");
     }
 
     final public function getId(): string

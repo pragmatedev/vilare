@@ -7,7 +7,7 @@ trait Resolver
     private array $manifest = [];
 
     /**
-     * @action init
+     * @action init 1
      */
     public function load(): void
     {
@@ -39,7 +39,7 @@ trait Resolver
         return $tag;
     }
 
-    public function enqueue(string $path, array $config = []): string
+    public function register(string $path, array $config = []): string
     {
         $config = [
             'handle' => ! empty($config['handle']) ? $config['handle'] : uniqid(),
@@ -65,7 +65,7 @@ trait Resolver
 
             if (! empty($dependencies['scripts'])) {
                 foreach ($dependencies['scripts'] as $index => $script) {
-                    $config['deps'][] = $this->enqueue(
+                    $config['deps'][] = $this->register(
                         $script,
                         [
                             'handle' => "{$config['handle']}-{$index}",
@@ -76,7 +76,7 @@ trait Resolver
 
             if (! empty($dependencies['styles'])) {
                 foreach ($dependencies['styles'] as $index => $style) {
-                    $config['deps'][] = $this->enqueue(
+                    $config['deps'][] = $this->register(
                         $style,
                         [
                             'handle' => "{$config['handle']}-{$index}",
@@ -88,7 +88,7 @@ trait Resolver
 
         switch ($config['type']) {
             case 'script':
-                wp_enqueue_script(
+                wp_register_script(
                     $config['handle'],
                     $config['src'],
                     $config['deps'],
@@ -102,7 +102,7 @@ trait Resolver
                 break;
 
             case 'style':
-                wp_enqueue_style(
+                wp_register_style(
                     $config['handle'],
                     $config['src'],
                     $config['deps'],
@@ -113,6 +113,19 @@ trait Resolver
         }
 
         return $config['handle'];
+    }
+
+    public function enqueue(string $path, array $config = []): string
+    {
+        $handle = $this->register($path, $config);
+
+        if (preg_match('/\.(css|scss)(\?.*)?$/', $path)) {
+            wp_enqueue_style($handle);
+        } elseif (preg_match('/\.js(\?.*)?$/', $path)) {
+            wp_enqueue_script($handle);
+        }
+
+        return $handle;
     }
 
     public function resolve(string $path, string $type = 'url'): string

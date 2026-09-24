@@ -37,4 +37,24 @@ class Blocks
     {
         return $this->blocks;
     }
+
+    /**
+     * @action wp_enqueue_scripts
+     */
+    public function enqueue(): void
+    {
+        foreach ($this->blocks as $block) {
+            if ($block->isPrimary()) {
+                $block->enqueue();
+            }
+        }
+    }
+
+    /**
+     * @filter should_load_block_assets_on_demand
+     */
+    public function defer(): bool
+    {
+        return true;
+    }
 }

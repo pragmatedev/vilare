@@ -9,11 +9,11 @@ class Assets
     use Resolver;
 
     /**
-     * @action wp_enqueue_scripts
+     * @action init 5
      */
-    public function front(): void
+    public function init(): void
     {
-        $this->enqueue(
+        $this->register(
             'scripts/alpine.js',
             [
                 'handle' => 'alpine',
@@ -22,18 +22,20 @@ class Assets
             ]
         );
 
-        $this->enqueue(
-            'styles/styles.scss',
+        $this->register(
+            is_admin() ? 'styles/admin.scss' : 'styles/styles.scss',
             [
                 'handle' => 'style',
             ]
         );
 
-        $this->enqueue(
-            'scripts/scripts.js',
+        $this->register(
+            is_admin() ? 'scripts/admin.js' : 'scripts/scripts.js',
             [
                 'handle' => 'script',
-                'deps' => ['alpine'],
+                'deps' => is_admin()
+                    ? ['alpine', 'wp-block-editor', 'wp-components', 'wp-hooks', 'wp-i18n']
+                    : ['alpine'],
             ]
         );
 
@@ -44,6 +46,7 @@ class Assets
                 'vilare_assets_localize',
                 [
                     'ajax_url' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('vilare'),
                 ]
             )
         );
@@ -52,44 +55,13 @@ class Assets
     }
 
     /**
+     * @action wp_enqueue_scripts
      * @action admin_enqueue_scripts
      */
-    public function admin(): void
+    public function theme(): void
     {
-        $this->enqueue(
-            'scripts/alpine.js',
-            [
-                'handle' => 'alpine',
-            ]
-        );
-
-        $this->enqueue(
-            'styles/admin.scss',
-            [
-                'handle' => 'style',
-            ]
-        );
-
-        $this->enqueue(
-            'scripts/admin.js',
-            [
-                'handle' => 'script',
-                'deps' => ['alpine'],
-            ]
-        );
-
-        wp_localize_script(
-            'script',
-            'vilare',
-            apply_filters(
-                'vilare_assets_localize',
-                [
-                    'ajax' => admin_url('admin-ajax.php'),
-                ]
-            )
-        );
-
-        wp_add_inline_style('style', 'body { [x-cloak] { display: none } }');
+        wp_enqueue_style('style');
+        wp_enqueue_script('script');
     }
 
     /**

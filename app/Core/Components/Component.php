@@ -18,8 +18,6 @@ abstract class Component extends ComponentBase
 
     private array $dependencies = [];
 
-    private bool $primary = true;
-
     final public function render(array $data = [])
     {
         return vilare()->templating()->view("components::{$this->getId()}.template", $this->parse($this->data));
@@ -182,24 +180,13 @@ abstract class Component extends ComponentBase
         $this->dependencies = $dependencies;
     }
 
-    public function isPrimary(): bool
-    {
-        return ! empty($this->primary);
-    }
-
-    final public function setPrimary(bool $primary = true): void
-    {
-        $this->primary = $primary;
-    }
-
     /**
      * @action wp_enqueue_scripts
      * @action admin_enqueue_scripts
+     * @action enqueue_block_assets
      */
-    final public function enqueuePrimary(): void
+    final public function enqueueAssets(): void
     {
-        if ($this->isPrimary()) {
-            $this->enqueue();
-        }
+        $this->enqueue();
     }
 }

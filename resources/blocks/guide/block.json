@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "name": "acf/guide",
+  "title": "Guide",
+  "category": "common",
+  "keywords": ["vilare"],
+  "supports": {
+    "anchor": true,
+    "jsx": false
+  },
+  "style": "block-guide-style",
+  "script": "block-guide-script",
+  "acf": {
+    "mode": "edit"
+  }
+}

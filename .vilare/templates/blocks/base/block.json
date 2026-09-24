@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "name": "acf/base",
+  "title": "Base",
+  "category": "common",
+  "keywords": ["vilare"],
+  "supports": {
+    "anchor": true,
+    "jsx": false
+  },
+  "style": "block-base-style",
+  "script": "block-base-script",
+  "acf": {
+    "mode": "edit"
+  }
+}
