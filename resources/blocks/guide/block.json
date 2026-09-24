@@ -3,9 +3,7 @@
   "name": "acf/guide",
   "title": "Guide",
   "category": "common",
-  "keywords": [
-    "vilare"
-  ],
+  "keywords": ["vilare"],
   "supports": {
     "anchor": true,
     "jsx": false

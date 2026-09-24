@@ -3,9 +3,7 @@
   "name": "acf/base",
   "title": "Base",
   "category": "common",
-  "keywords": [
-    "vilare"
-  ],
+  "keywords": ["vilare"],
   "supports": {
     "anchor": true,
     "jsx": false
