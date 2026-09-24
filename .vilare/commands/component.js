@@ -35,13 +35,21 @@ class Controller {
           {
             name: 'create component',
             value: 'create',
-          }],
+          },
+          {
+            name: 'pull component',
+            value: 'pull',
+          },
+        ],
       },
     ]);
 
     switch (data.task) {
       case 'create':
         await this.create(options);
+        break;
+      case 'pull':
+        await this.pull(options);
         break;
     }
   }
@@ -52,7 +60,7 @@ class Controller {
         type: 'select',
         name: 'type',
         message: 'Type: ',
-        choices: ['block', 'component', 'template'],
+        choices: () => ['block', 'component', 'template'],
         when: () => !options.type,
       },
       {
@@ -92,6 +100,76 @@ class Controller {
     }
 
     console.log(`✅ ${config.title} ${config.type} created successfully`);
+  }
+
+  async pull(options) {
+    const repository = [
+      {
+        id: 'form',
+        name: 'Form',
+        type: 'block',
+        repository: 'git@github.com:pragmatedev/vilare-block-form.git',
+      },
+      {
+        id: 'navbar',
+        name: 'Navbar',
+        type: 'block',
+        repository: 'git@github.com:pragmatedev/vilare-block-navbar.git',
+      },
+      {
+        id: 'query',
+        name: 'Query',
+        type: 'block',
+        repository: 'git@github.com:pragmatedev/vilare-block-query.git',
+      },
+      {
+        id: 'vimeo',
+        name: 'Vimeo',
+        type: 'component',
+        repository: 'git@github.com:pragmatedev/vilare-component-vimeo.git',
+      },
+    ];
+
+    const inputs = await inquirer.prompt([
+      {
+        type: 'select',
+        name: 'type',
+        message: 'Type: ',
+        choices: () => ['block', 'component', 'template'],
+        when: () => !options.type,
+      },
+      {
+        type: 'select',
+        name: 'item',
+        message: 'Item: ',
+        choices: (answers) => repository.filter(item => item.type === (options.type || answers.type)).map(item => item.repository),
+        when: () => !options.item,
+      },
+    ]);
+
+    const item = repository.find(item => item.repository === inputs.item);
+
+    if (fs.existsSync(this.output.path)) {
+      fs.rmSync(this.output.path, { recursive: true });
+    }
+
+    shell.exec(`git clone ${item.repository} ${this.output.path}`);
+
+    for (const file of this.getFilesRepo(item)) {
+      const dir = path.dirname(file.destination);
+
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+
+      fs.copyFileSync(file.source, file.destination);
+    }
+
+    if (fs.existsSync(this.output.path)) {
+      fs.rmSync(this.output.path, { recursive: true });
+    }
+
+    console.log(`✅ ${item.name} ${item.type} created successfully`);
   }
 
   getFiles(config) {
@@ -200,6 +278,113 @@ class Controller {
         return [];
     }
   }
+
+  getFilesRepo(config) {
+    if (!['block', 'component', 'template'].includes(config.type)) {
+      throw new Error('invalid component type');
+    }
+
+    if (!/^[a-z]+(-[a-z]+)*$/.test(config.id)) {
+      throw new Error('id must be kebab-case');
+    }
+
+    if (!/^[A-Z][a-zA-Z]*$/.test(config.name)) {
+      throw new Error('title must be PascalCase');
+    }
+
+    switch (config.type) {
+      case 'block':
+        if (fs.existsSync(`${this.theme.path}/resources/blocks/${config.id}`)) {
+          throw new Error(`❌ ${config.id} block already exists`);
+        }
+
+        if (fs.existsSync(`${this.theme.path}/app/Blocks/${config.name}.php`)) {
+          throw new Error(`❌ ${config.id} block already exists`);
+        }
+
+        return [
+          {
+            source: `${this.output.path}/block.json`,
+            destination: `${this.theme.path}/resources/blocks/${config.id}/block.json`,
+          },
+          {
+            source: `${this.output.path}/script.js`,
+            destination: `${this.theme.path}/resources/blocks/${config.id}/script.js`,
+          },
+          {
+            source: `${this.output.path}/style.scss`,
+            destination: `${this.theme.path}/resources/blocks/${config.id}/style.scss`,
+          },
+          {
+            source: `${this.output.path}/template.blade.php`,
+            destination: `${this.theme.path}/resources/blocks/${config.id}/template.blade.php`,
+          },
+          {
+            source: `${this.output.path}/${config.name}.php`,
+            destination: `${this.theme.path}/app/Blocks/${config.name}.php`,
+          },
+        ];
+
+      case 'component':
+        if (fs.existsSync(`${this.theme.path}/resources/components/${config.id}`)) {
+          throw new Error(`❌ ${config.id} component already exists`);
+        }
+
+        if (fs.existsSync(`${this.theme.path}/app/Components/${config.name}.php`)) {
+          throw new Error(`❌ ${config.id} component already exists`);
+        }
+
+        return [
+          {
+            source: `${this.output.path}/script.js`,
+            destination: `${this.theme.path}/resources/components/${config.id}/script.js`,
+          },
+          {
+            source: `${this.output.path}/style.scss`,
+            destination: `${this.theme.path}/resources/components/${config.id}/style.scss`,
+          },
+          {
+            source: `${this.output.path}/template.blade.php`,
+            destination: `${this.theme.path}/resources/components/${config.id}/template.blade.php`,
+          },
+          {
+            source: `${this.output.path}/${config.name}.php`,
+            destination: `${this.theme.path}/app/Components/${config.name}.php`,
+          },
+        ];
+
+      case 'template':
+        if (fs.existsSync(`${this.theme.path}/resources/templates/${config.id}`)) {
+          throw new Error(`❌ ${config.id} template already exists`);
+        }
+
+        if (fs.existsSync(`${this.theme.path}/app/Templates/${config.name}.php`)) {
+          throw new Error(`❌ ${config.id} template already exists`);
+        }
+
+        return [
+          {
+            source: `${this.output.path}/script.js`,
+            destination: `${this.theme.path}/resources/templates/${config.id}/script.js`,
+          },
+          {
+            source: `${this.output.path}/style.scss`,
+            destination: `${this.theme.path}/resources/templates/${config.id}/style.scss`,
+          },
+          {
+            source: `${this.output.path}/template.blade.php`,
+            destination: `${this.theme.path}/resources/templates/${config.id}/template.blade.php`,
+          },
+          {
+            source: `${this.output.path}/${config.name}.php`,
+            destination: `${this.theme.path}/app/Templates/${config.name}.php`,
+          },
+        ];
+
+      default:
+        return [];
+    }
+  }
 }
 
 export const component = () => {
@@ -219,11 +404,24 @@ export const component = () => {
   program
     .command('create')
     .description('create a new component')
-    .option('-y, --type <type>', 'the type of the component')
+    .option('-t, --type <type>', 'the type of the component')
     .option('-i, --id <id>', 'the id of the component')
     .action(async(options) => {
       try {
         await controller.create(options);
+      } catch (error) {
+        program.error(error.message);
+      }
+    });
+
+  program
+    .command('pull')
+    .description('pull components from repository')
+    .option('-t, --type <type>', 'the type of the component')
+    .option('-i, --item <item>', 'the item to pull')
+    .action(async(options) => {
+      try {
+        await controller.pull(options);
       } catch (error) {
         program.error(error.message);
       }
