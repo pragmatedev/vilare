@@ -108,8 +108,6 @@ class Controller {
       await ssh.execCommand(`rm -rf ${connection.root}/wp-content/cache`);
 
       console.log();
-    } catch (err) {
-      console.log(err);
     } finally {
       ssh.dispose();
     }
@@ -259,8 +257,6 @@ class Controller {
       await ssh.execCommand('unzip -u www.zip');
 
       console.log();
-    } catch (err) {
-      console.log(err);
     } finally {
       ftp.close();
       ssh.dispose();
@@ -280,7 +276,7 @@ export const deploy = () => {
       try {
         await controller.deploy(options.env, options.mode);
       } catch (error) {
-        program.error(error);
+        program.error(error.message);
       }
     });
 
