@@ -47,12 +47,14 @@ class Directives
             }
 
             if ($width > 0 && $height > 0) {
+                $args['class'] = $args['class'] ?? '';
+
                 if ($height > $width) {
-                    $args['class'] = $args['class'] . ' -aspect-vertical';
+                    $args['class'] = trim($args['class'] . ' -aspect-vertical');
                 } elseif ($width > $height) {
-                    $args['class'] = $args['class'] . ' -aspect-horizontal';
+                    $args['class'] = trim($args['class'] . ' -aspect-horizontal');
                 } else {
-                    $args['class'] = $args['class'] . ' -aspect-square';
+                    $args['class'] = trim($args['class'] . ' -aspect-square');
                 }
             }
         }
