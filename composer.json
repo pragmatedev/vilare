@@ -9,7 +9,7 @@
     }
   },
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.4",
     "symfony/var-dumper": "^7.3.3",
     "rosell-dk/webp-convert": "^2.9.3",
     "illuminate/view": "^12.30.1",
